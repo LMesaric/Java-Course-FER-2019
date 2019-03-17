@@ -47,8 +47,8 @@ public class Collection {
 	 * 
 	 * @param value value to look for; can be <code>null</code>
 	 * @return <code>true</code> only if the collection contains the given value, as
-	 *         determined by {@link Object#equals(Object)} method,
-	 *         <code>false</code> otherwise
+	 *         determined by {@link Object#equals(Object)}, <code>false</code>
+	 *         otherwise
 	 */
 	public boolean contains(Object value) {
 		return false;
@@ -57,9 +57,10 @@ public class Collection {
 	/**
 	 * Removes exactly one object equal to <code>value</code> from this collection,
 	 * if such exists (determined by {@link Object#equals(Object)}). If there are
-	 * multiple candidates for removal, it is not known which one will be removed.
+	 * multiple candidates for removal, it is not defined which one will be removed.
 	 * 
-	 * @param value value to remove, if it exists inside this collection
+	 * @param value value to remove, if it exists inside this collection; can be
+	 *              <code>null</code>
 	 * @return <code>true</code> only if an object was removed, <code>false</code>
 	 *         otherwise
 	 */
