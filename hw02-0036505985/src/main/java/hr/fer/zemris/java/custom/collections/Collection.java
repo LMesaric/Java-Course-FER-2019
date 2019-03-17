@@ -107,7 +107,7 @@ public class Collection {
 		class AddElementsProcessor extends Processor {
 
 			/**
-			 * Adds <code>value</code> to collection. Ignores return value.
+			 * Adds <code>value</code> to collection.
 			 */
 			@Override
 			public void process(Object value) {
