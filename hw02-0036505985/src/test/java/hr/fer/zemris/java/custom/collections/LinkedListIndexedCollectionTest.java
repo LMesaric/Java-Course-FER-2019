@@ -13,20 +13,20 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Luka Mesaric
  */
-class ArrayIndexedCollectionTest {
+class LinkedListIndexedCollectionTest {
 
-	private static ArrayIndexedCollection empty;
-	private static ArrayIndexedCollection one;
-	private static ArrayIndexedCollection ten;
+	private static LinkedListIndexedCollection empty;
+	private static LinkedListIndexedCollection one;
+	private static LinkedListIndexedCollection ten;
 
 	@BeforeEach
 	void setUp() {
-		empty = new ArrayIndexedCollection();
+		empty = new LinkedListIndexedCollection();
 
-		one = new ArrayIndexedCollection();
+		one = new LinkedListIndexedCollection();
 		one.add("hey");
 
-		ten = new ArrayIndexedCollection();
+		ten = new LinkedListIndexedCollection();
 		ten.add("hey");
 		ten.add(12);
 		ten.add(-5);
@@ -34,33 +34,20 @@ class ArrayIndexedCollectionTest {
 		ten.add("hey");
 		ten.add(true);
 		ten.add(false);
-		ten.add(new ArrayIndexedCollection());
+		ten.add(new LinkedListIndexedCollection());
 		ten.add(24L);
 		ten.add("text");
 	}
 
 	@Test
 	void testConstructors() {
-		assertThrows(IllegalArgumentException.class, () -> new ArrayIndexedCollection(0));
-		assertThrows(NullPointerException.class, () -> new ArrayIndexedCollection(null));
+		assertThrows(NullPointerException.class, () -> new LinkedListIndexedCollection(null));
 
-		assertThrows(NullPointerException.class, () -> new ArrayIndexedCollection(null, 10));
-		assertThrows(IllegalArgumentException.class, () -> new ArrayIndexedCollection(one, 0));
-
-		ArrayIndexedCollection emptyFirst = new ArrayIndexedCollection(10);
+		LinkedListIndexedCollection emptyFirst = new LinkedListIndexedCollection();
 		assertEquals(0, emptyFirst.size());
 
-		ArrayIndexedCollection emptySecond = new ArrayIndexedCollection(empty);
+		LinkedListIndexedCollection emptySecond = new LinkedListIndexedCollection(empty);
 		assertEquals(0, emptySecond.size());
-
-		ArrayIndexedCollection emptyThird = new ArrayIndexedCollection(empty, 100);
-		assertEquals(0, emptyThird.size());
-
-		ArrayIndexedCollection tenFirst = new ArrayIndexedCollection(ten, 100);
-		assertEquals(10, tenFirst.size());
-
-		ArrayIndexedCollection tenSecond = new ArrayIndexedCollection(ten, 1);
-		assertEquals(10, tenSecond.size());
 	}
 
 	@Test
@@ -159,7 +146,7 @@ class ArrayIndexedCollectionTest {
 		assertFalse(ten.contains("heyyyy")); // She wants you :)
 
 		assertTrue(ten.contains("hey")); // Just friends :(
-		assertTrue(ten.contains(new ArrayIndexedCollection()));
+		assertTrue(ten.contains(new LinkedListIndexedCollection()));
 	}
 
 	@Test
@@ -218,7 +205,7 @@ class ArrayIndexedCollectionTest {
 			}
 		}
 
-		ArrayIndexedCollection three = new ArrayIndexedCollection();
+		LinkedListIndexedCollection three = new LinkedListIndexedCollection();
 		three.add("1");
 		three.add("2");
 		three.add("3");
@@ -232,12 +219,11 @@ class ArrayIndexedCollectionTest {
 
 	@Test
 	void testEquals() {
-		assertEquals(ten, new ArrayIndexedCollection(ten));
+		assertEquals(ten, new LinkedListIndexedCollection(ten));
 	}
 
 	@Test
 	void testHashCode() {
-		assertEquals(ten.hashCode(), new ArrayIndexedCollection(ten).hashCode());
+		assertEquals(ten.hashCode(), new LinkedListIndexedCollection(ten).hashCode());
 	}
-
 }

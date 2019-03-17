@@ -115,7 +115,7 @@ public class ArrayIndexedCollection extends Collection {
 	 *                                  <code>1</code>
 	 */
 	private static int validateConstructorInput(Collection other, int initialCapacity) {
-		Collection validatedCol = (Collection) validateNotNull(other, "other");
+		Collection validatedCol = (Collection) Util.validateNotNull(other, "other");
 		int collectionSize = validatedCol.size();
 		int validatedCapacity = validateCapacity(initialCapacity);
 		return Math.max(collectionSize, validatedCapacity);
@@ -139,20 +139,6 @@ public class ArrayIndexedCollection extends Collection {
 		return initialCapacity;
 	}
 
-	/**
-	 * Checks that the specified object reference is not {@code null} and throws a
-	 * customised {@link NullPointerException} if it is.
-	 * 
-	 * @param object the object reference to check
-	 * @param name   name to use in exception message
-	 * @return <code>object</code> if not <code>null</code>
-	 * 
-	 * @throws NullPointerException if <code>object</code> is <code>null</code>
-	 */
-	private static Object validateNotNull(Object object, String name) {
-		return Objects.requireNonNull(object, "Argument '" + name + "' must not be null.");
-	}
-
 	@Override
 	public int size() {
 		return size;
@@ -161,14 +147,14 @@ public class ArrayIndexedCollection extends Collection {
 	/**
 	 * {@inheritDoc} Adding <code>null</code> is forbidden.
 	 * <p>
-	 * Adds an element in roughly constant time (might need to reallocate).
+	 * Adds an element in constant time (might need to reallocate).
 	 * </p>
 	 * 
 	 * @throws NullPointerException if <code>value</code> is <code>null</code>
 	 */
 	@Override
 	public void add(Object value) {
-		validateNotNull(value, "value");
+		Util.validateNotNull(value, "value");
 		increaseCapacityIfNeeded();
 
 		elements[size++] = value;
@@ -179,10 +165,10 @@ public class ArrayIndexedCollection extends Collection {
 	 * Inserting <code>null</code> is forbidden. Legal positions are from
 	 * <code>0</code> to <code>size</code> (both included).
 	 * <p>
-	 * Inserts an element in roughly linear time (might need to reallocate).
+	 * Inserts an element in linear time (might need to reallocate).
 	 * </p>
 	 * 
-	 * @param value    object to add; must not be <code>null</code>
+	 * @param value    object to insert; must not be <code>null</code>
 	 * @param position position from <code>0</code> to <code>size</code> (both
 	 *                 included)
 	 * 
@@ -192,7 +178,7 @@ public class ArrayIndexedCollection extends Collection {
 	 *                                   <code>size</code>
 	 */
 	public void insert(Object value, int position) {
-		validateNotNull(value, "value");
+		Util.validateNotNull(value, "value");
 		Objects.checkIndex(position, size + 1);
 		increaseCapacityIfNeeded();
 
@@ -269,7 +255,7 @@ public class ArrayIndexedCollection extends Collection {
 	 * <code>index</code>, etc. Legal indices are <code>0</code> to
 	 * <code>size-1</code>.
 	 * <p>
-	 * Removes object from wanted index in roughly linear time.
+	 * Removes object from wanted index in linear time.
 	 * </p>
 	 * <p>
 	 * This method is different from {@link Collection#remove(Object)}.
@@ -358,7 +344,7 @@ public class ArrayIndexedCollection extends Collection {
 			return false;
 		}
 		ArrayIndexedCollection other = (ArrayIndexedCollection) obj;
-		return Arrays.deepEquals(this.toArray(), other.toArray()) && size == other.size;
+		return (size == other.size) && Arrays.deepEquals(this.toArray(), other.toArray());
 	}
 
 }
