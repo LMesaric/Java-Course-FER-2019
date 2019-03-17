@@ -20,7 +20,7 @@ public class Collection {
 	 * @return <code>true</code> if collection contains no objects,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean isEmpyt() {
+	public boolean isEmpty() {
 		return size() == 0;
 	}
 
