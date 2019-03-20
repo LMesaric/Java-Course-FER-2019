@@ -302,9 +302,12 @@ public class ArrayIndexedCollection extends Collection {
 	/**
 	 * Calls {@link Processor#process(Object)} for each element of this collection,
 	 * in the order they are written in the backing array.
+	 * 
+	 * @throws NullPointerException {@inheritDoc}
 	 */
 	@Override
 	public void forEach(Processor processor) {
+		Util.validateNotNull(processor, "processor");
 		for (int i = 0; i < size; i++) {
 			processor.process(elements[i]);
 		}

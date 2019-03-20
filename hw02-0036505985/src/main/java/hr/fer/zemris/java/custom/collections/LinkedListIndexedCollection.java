@@ -407,11 +407,14 @@ public class LinkedListIndexedCollection extends Collection {
 	 * Calls {@link Processor#process(Object)} for each element of this collection,
 	 * in the order they are linked in the linked list, from <code>first</code> to
 	 * <code>last</code>.
+	 * 
+	 * @throws NullPointerException {@inheritDoc}
 	 */
 	@Override
 	public void forEach(Processor processor) {
-		ListNode current = first;
+		Util.validateNotNull(processor, "processor");
 
+		ListNode current = first;
 		while (current != null) {
 			processor.process(current.value);
 			current = current.next;

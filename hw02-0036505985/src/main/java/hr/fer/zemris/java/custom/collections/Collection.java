@@ -85,6 +85,8 @@ public class Collection {
 	 * 
 	 * @param processor <code>Processor</code> instance used to process elements of
 	 *                  this collection
+	 * 
+	 * @throws NullPointerException if <code>processor</code> is <code>null</code>
 	 */
 	public void forEach(Processor processor) {
 		return;
@@ -95,6 +97,8 @@ public class Collection {
 	 * collection. Other collection <b>remains unchanged</b>.
 	 * 
 	 * @param other collection whose elements will be added into this collection
+	 * 
+	 * @throws NullPointerException if <code>other</code> is <code>null</code>
 	 */
 	public void addAll(Collection other) {
 
@@ -115,6 +119,7 @@ public class Collection {
 			}
 		}
 
+		Util.validateNotNull(other, "other");
 		other.forEach(new AddElementsProcessor());
 	}
 
