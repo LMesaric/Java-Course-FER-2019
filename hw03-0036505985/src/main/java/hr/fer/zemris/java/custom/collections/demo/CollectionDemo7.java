@@ -25,8 +25,7 @@ public class CollectionDemo7 {
 		col.add("Jasna");
 		ElementsGetter getter = col.createElementsGetter();
 		getter.getNextElement();
-		getter.processRemaining((System.out::println);
-
+		getter.processRemaining(System.out::println);
 	}
 
 }
