@@ -1,6 +1,7 @@
 package hr.fer.zemris.java.custom.collections;
 
 import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -28,6 +29,12 @@ public class ArrayIndexedCollection implements Collection {
 	 * <code>capacity</code> argument of (some) constructors.
 	 */
 	private Object[] elements;
+
+	/**
+	 * Counter of modifications of data stored in this collection. Must be
+	 * incremented for each change to stored data.
+	 */
+	private long modificationCount = 0L;
 
 	/**
 	 * Initial capacity used when no other is provided. Value is {@value}.
@@ -158,6 +165,7 @@ public class ArrayIndexedCollection implements Collection {
 		increaseCapacityIfNeeded();
 
 		elements[size++] = value;
+		modificationCount++;
 	}
 
 	/**
@@ -188,6 +196,7 @@ public class ArrayIndexedCollection implements Collection {
 
 		elements[position] = value;
 		size++;
+		modificationCount++;
 	}
 
 	/**
@@ -197,6 +206,7 @@ public class ArrayIndexedCollection implements Collection {
 	private void increaseCapacityIfNeeded() {
 		if (size >= elements.length) {
 			elements = Arrays.copyOf(elements, elements.length * RESIZE_FACTOR);
+			modificationCount++;
 		}
 	}
 
@@ -275,6 +285,7 @@ public class ArrayIndexedCollection implements Collection {
 		}
 
 		elements[--size] = null;
+		modificationCount++;
 	}
 
 	/**
@@ -320,6 +331,7 @@ public class ArrayIndexedCollection implements Collection {
 	public void clear() {
 		Arrays.fill(elements, 0, size, null);
 		size = 0;
+		modificationCount++;
 	}
 
 	@Override
@@ -346,6 +358,12 @@ public class ArrayIndexedCollection implements Collection {
 		private int currentPosition = 0;
 
 		/**
+		 * Collection's modification count at the time of creating this
+		 * <code>ElementsGetter</code>.
+		 */
+		private final long savedModificationCount;
+
+		/**
 		 * Default constructor.
 		 * 
 		 * @param data collection to iterate over
@@ -355,17 +373,27 @@ public class ArrayIndexedCollection implements Collection {
 		public ArrayElementsGetter(ArrayIndexedCollection data) {
 			Util.validateNotNull(data, "data");
 			this.data = data;
+			this.savedModificationCount = data.modificationCount;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @throws ConcurrentModificationException {@inheritDoc}
+		 */
 		@Override
 		public boolean hasNextElement() {
+			if (savedModificationCount != data.modificationCount) {
+				throw new ConcurrentModificationException("Collection was changed since this iterator was created.");
+			}
 			return currentPosition < data.size;
 		}
 
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @throws NoSuchElementException {@inheritDoc}
+		 * @throws NoSuchElementException          {@inheritDoc}
+		 * @throws ConcurrentModificationException {@inheritDoc}
 		 */
 		@Override
 		public Object getNextElement() {

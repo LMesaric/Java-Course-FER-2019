@@ -1,6 +1,7 @@
 package hr.fer.zemris.java.custom.collections;
 
 import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -32,6 +33,12 @@ public class LinkedListIndexedCollection implements Collection {
 	 * Reference to the last node of this linked list.
 	 */
 	private ListNode last = null;
+
+	/**
+	 * Counter of modifications of data stored in this collection. Must be
+	 * incremented for each change to stored data.
+	 */
+	private long modificationCount = 0L;
 
 	/**
 	 * Models a single node used for storing data in
@@ -157,6 +164,7 @@ public class LinkedListIndexedCollection implements Collection {
 			last = newNode;
 		}
 		size++;
+		modificationCount++;
 	}
 
 	/**
@@ -204,6 +212,7 @@ public class LinkedListIndexedCollection implements Collection {
 		}
 
 		size++;
+		modificationCount++;
 	}
 
 	/**
@@ -348,6 +357,7 @@ public class LinkedListIndexedCollection implements Collection {
 		}
 
 		size--;
+		modificationCount++;
 	}
 
 	/**
@@ -419,6 +429,7 @@ public class LinkedListIndexedCollection implements Collection {
 
 		first = last = null;
 		size = 0;
+		modificationCount++;
 	}
 
 	@Override
@@ -436,9 +447,20 @@ public class LinkedListIndexedCollection implements Collection {
 	private static class LinkedListElementsGetter implements ElementsGetter {
 
 		/**
+		 * Collection to iterate over.
+		 */
+		private final LinkedListIndexedCollection data;
+
+		/**
 		 * Node whose value will be returned next.
 		 */
 		private ListNode currentNode;
+
+		/**
+		 * Collection's modification count at the time of creating this
+		 * <code>ElementsGetter</code>.
+		 */
+		private final long savedModificationCount;
 
 		/**
 		 * Default constructor.
@@ -449,18 +471,29 @@ public class LinkedListIndexedCollection implements Collection {
 		 */
 		public LinkedListElementsGetter(LinkedListIndexedCollection data) {
 			Util.validateNotNull(data, "data");
+			this.data = data;
 			this.currentNode = data.first;
+			this.savedModificationCount = data.modificationCount;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @throws ConcurrentModificationException {@inheritDoc}
+		 */
 		@Override
 		public boolean hasNextElement() {
+			if (savedModificationCount != data.modificationCount) {
+				throw new ConcurrentModificationException("Collection was changed since this iterator was created.");
+			}
 			return currentNode != null;
 		}
 
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @throws NoSuchElementException {@inheritDoc}
+		 * @throws NoSuchElementException          {@inheritDoc}
+		 * @throws ConcurrentModificationException {@inheritDoc}
 		 */
 		@Override
 		public Object getNextElement() {
