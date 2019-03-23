@@ -44,12 +44,15 @@ public interface ElementsGetter {
 	 * 
 	 * @param p <code>Processor</code> used to process elements
 	 * 
+	 * @throws NullPointerException            if <code>p</code> is
+	 *                                         <code>null</code>
 	 * @throws ConcurrentModificationException if collection was changed after the
 	 *                                         moment when this
 	 *                                         <code>ElementsGetter</code> was
 	 *                                         created
 	 */
 	default void processRemaining(Processor p) {
+		Util.validateNotNull(p, "p");
 		while (this.hasNextElement()) {
 			p.process(this.getNextElement());
 		}

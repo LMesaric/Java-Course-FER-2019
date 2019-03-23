@@ -16,7 +16,7 @@ import java.util.Objects;
  * 
  * @see Collection
  */
-public class LinkedListIndexedCollection implements Collection {
+public class LinkedListIndexedCollection implements List {
 
 	/**
 	 * Current size of this collection - number of elements actually stored; number
@@ -184,6 +184,7 @@ public class LinkedListIndexedCollection implements Collection {
 	 *                                   <code>0</code> or greater than
 	 *                                   <code>size</code>
 	 */
+	@Override
 	public void insert(Object value, int position) {
 
 		Util.validateNotNull(value, "value");
@@ -216,8 +217,8 @@ public class LinkedListIndexedCollection implements Collection {
 	}
 
 	/**
-	 * Returns the object that is stored in the linked list at position index. Valid
-	 * indices are <code>0</code> to <code>size-1</code>.
+	 * Returns the object that is stored in the linked list at position
+	 * <code>index</code>. Valid indices are <code>0</code> to <code>size-1</code>.
 	 * <p>
 	 * Returns wanted element in linear time - O(n/2).
 	 * </p>
@@ -229,6 +230,7 @@ public class LinkedListIndexedCollection implements Collection {
 	 *                                   <code>0</code> or greater than
 	 *                                   <code>size-1</code>
 	 */
+	@Override
 	public Object get(int index) {
 		return getNode(index).node.value;
 	}
@@ -305,6 +307,7 @@ public class LinkedListIndexedCollection implements Collection {
 	 *         <code>-1</code> if the <code>value</code> is not found or it is
 	 *         <code>null</code>
 	 */
+	@Override
 	public int indexOf(Object value) {
 		IndexNodePair pair = getNode(value);
 		return pair != null ? pair.nodeIndex : -1;
@@ -333,6 +336,7 @@ public class LinkedListIndexedCollection implements Collection {
 	 *                                   <code>0</code> or greater than
 	 *                                   <code>size-1</code>
 	 */
+	@Override
 	public void remove(int index) {
 		Objects.checkIndex(index, size);
 
@@ -395,24 +399,6 @@ public class LinkedListIndexedCollection implements Collection {
 
 		forEach(toArrayProcessor);
 		return toArrayProcessor.elements;
-	}
-
-	/**
-	 * Calls {@link Processor#process(Object)} for each element of this collection,
-	 * in the order they are linked in the linked list, from <code>first</code> to
-	 * <code>last</code>.
-	 * 
-	 * @throws NullPointerException {@inheritDoc}
-	 */
-	@Override
-	public void forEach(Processor processor) {
-		Util.validateNotNull(processor, "processor");
-
-		ListNode current = first;
-		while (current != null) {
-			processor.process(current.value);
-			current = current.next;
-		}
 	}
 
 	@Override

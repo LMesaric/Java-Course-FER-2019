@@ -16,7 +16,7 @@ import java.util.Objects;
  * 
  * @see Collection
  */
-public class ArrayIndexedCollection implements Collection {
+public class ArrayIndexedCollection implements List {
 
 	/**
 	 * Current size of this collection - number of elements actually stored in
@@ -185,6 +185,7 @@ public class ArrayIndexedCollection implements Collection {
 	 *                                   <code>0</code> or greater than
 	 *                                   <code>size</code>
 	 */
+	@Override
 	public void insert(Object value, int position) {
 		Util.validateNotNull(value, "value");
 		Objects.checkIndex(position, size + 1);
@@ -211,8 +212,8 @@ public class ArrayIndexedCollection implements Collection {
 	}
 
 	/**
-	 * Returns the object that is stored in the backing array at position index.
-	 * Valid indices are <code>0</code> to <code>size-1</code>.
+	 * Returns the object that is stored in the backing array at position
+	 * <code>index</code>. Valid indices are <code>0</code> to <code>size-1</code>.
 	 * <p>
 	 * Returns wanted element in constant time.
 	 * </p>
@@ -224,6 +225,7 @@ public class ArrayIndexedCollection implements Collection {
 	 *                                   <code>0</code> or greater than
 	 *                                   <code>size-1</code>
 	 */
+	@Override
 	public Object get(int index) {
 		return elements[Objects.checkIndex(index, size)];
 	}
@@ -241,6 +243,7 @@ public class ArrayIndexedCollection implements Collection {
 	 *         <code>-1</code> if the <code>value</code> is not found or it is
 	 *         <code>null</code>
 	 */
+	@Override
 	public int indexOf(Object value) {
 		if (value == null) {
 			return -1;
@@ -277,6 +280,7 @@ public class ArrayIndexedCollection implements Collection {
 	 *                                   <code>0</code> or greater than
 	 *                                   <code>size-1</code>
 	 */
+	@Override
 	public void remove(int index) {
 		Objects.checkIndex(index, size);
 
@@ -308,20 +312,6 @@ public class ArrayIndexedCollection implements Collection {
 	@Override
 	public Object[] toArray() {
 		return Arrays.copyOfRange(elements, 0, size);
-	}
-
-	/**
-	 * Calls {@link Processor#process(Object)} for each element of this collection,
-	 * in the order they are written in the backing array.
-	 * 
-	 * @throws NullPointerException {@inheritDoc}
-	 */
-	@Override
-	public void forEach(Processor processor) {
-		Util.validateNotNull(processor, "processor");
-		for (int i = 0; i < size; i++) {
-			processor.process(elements[i]);
-		}
 	}
 
 	/**

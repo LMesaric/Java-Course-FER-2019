@@ -70,7 +70,10 @@ public interface Collection {
 	 * 
 	 * @throws NullPointerException if <code>processor</code> is <code>null</code>
 	 */
-	void forEach(Processor processor);
+	default void forEach(Processor processor) {
+		Util.validateNotNull(processor, "processor");
+		createElementsGetter().processRemaining(processor);
+	}
 
 	/**
 	 * Method adds all elements from the given collection into the current
@@ -97,5 +100,26 @@ public interface Collection {
 	 * @return instance of <code>ElementsGetter</code> used for iteration
 	 */
 	ElementsGetter createElementsGetter();
+
+	/**
+	 * All elements from <code>col</code> that <code>tester</code> accepts are added
+	 * into this collection.
+	 * 
+	 * @param col    collection whose elements are tested
+	 * @param tester function used for testing elements
+	 * 
+	 * @throws NullPointerException if any argument is <code>null</code>
+	 */
+	default void addAllSatisfying(Collection col, Tester tester) {
+		Util.validateNotNull(col, "col");
+		Util.validateNotNull(tester, "tester");
+
+		ElementsGetter getter = col.createElementsGetter();
+		getter.processRemaining(value -> {
+			if (tester.test(value)) {
+				this.add(value);
+			}
+		});
+	}
 
 }
