@@ -1,6 +1,7 @@
 package hr.fer.zemris.java.custom.collections;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -319,6 +320,61 @@ public class ArrayIndexedCollection implements Collection {
 	public void clear() {
 		Arrays.fill(elements, 0, size, null);
 		size = 0;
+	}
+
+	@Override
+	public ElementsGetter createElementsGetter() {
+		return new ArrayElementsGetter(this);
+	}
+
+	/**
+	 * Implementation of {@link ElementsGetter} for {@link ArrayIndexedCollection}.
+	 * Returns elements in order, starting from position <code>0</code>.
+	 * 
+	 * @author Luka Mesaric
+	 */
+	private static class ArrayElementsGetter implements ElementsGetter {
+
+		/**
+		 * Collection to iterate over.
+		 */
+		private final ArrayIndexedCollection data;
+
+		/**
+		 * Index of element to return next.
+		 */
+		private int currentPosition = 0;
+
+		/**
+		 * Default constructor.
+		 * 
+		 * @param data collection to iterate over
+		 * 
+		 * @throws NullPointerException if <code>data</code> is <code>null</code>
+		 */
+		public ArrayElementsGetter(ArrayIndexedCollection data) {
+			Util.validateNotNull(data, "data");
+			this.data = data;
+		}
+
+		@Override
+		public boolean hasNextElement() {
+			return currentPosition < data.size;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @throws NoSuchElementException {@inheritDoc}
+		 */
+		@Override
+		public Object getNextElement() {
+			if (!hasNextElement()) {
+				throw new NoSuchElementException("All elements of this collection have been used.");
+			}
+			return data.elements[currentPosition++];
+		}
+
 	}
 
 	@Override

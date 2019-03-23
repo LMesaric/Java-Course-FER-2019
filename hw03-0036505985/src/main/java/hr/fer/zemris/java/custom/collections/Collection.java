@@ -90,4 +90,12 @@ public interface Collection {
 	 */
 	void clear();
 
+	/**
+	 * Returns an instance of <code>ElementsGetter</code> that can be used to
+	 * iterate over a collection in linear time.
+	 * 
+	 * @return instance of <code>ElementsGetter</code> used for iteration
+	 */
+	ElementsGetter createElementsGetter();
+
 }

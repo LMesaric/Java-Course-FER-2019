@@ -1,6 +1,7 @@
 package hr.fer.zemris.java.custom.collections;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -418,6 +419,59 @@ public class LinkedListIndexedCollection implements Collection {
 
 		first = last = null;
 		size = 0;
+	}
+
+	@Override
+	public ElementsGetter createElementsGetter() {
+		return new LinkedListElementsGetter(this);
+	}
+
+	/**
+	 * Implementation of {@link ElementsGetter} for
+	 * {@link LinkedListElementsGetter}. Returns elements in order, starting from
+	 * element in first node.
+	 * 
+	 * @author Luka Mesaric
+	 */
+	private static class LinkedListElementsGetter implements ElementsGetter {
+
+		/**
+		 * Node whose value will be returned next.
+		 */
+		private ListNode currentNode;
+
+		/**
+		 * Default constructor.
+		 * 
+		 * @param data collection to iterate over
+		 * 
+		 * @throws NullPointerException if <code>data</code> is <code>null</code>
+		 */
+		public LinkedListElementsGetter(LinkedListIndexedCollection data) {
+			Util.validateNotNull(data, "data");
+			this.currentNode = data.first;
+		}
+
+		@Override
+		public boolean hasNextElement() {
+			return currentNode != null;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @throws NoSuchElementException {@inheritDoc}
+		 */
+		@Override
+		public Object getNextElement() {
+			if (!hasNextElement()) {
+				throw new NoSuchElementException("All elements of this collection have been used.");
+			}
+			Object value = currentNode.value;
+			currentNode = currentNode.next;
+			return value;
+		}
+
 	}
 
 	@Override
