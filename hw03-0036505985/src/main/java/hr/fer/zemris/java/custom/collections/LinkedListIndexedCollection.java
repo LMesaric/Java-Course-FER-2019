@@ -5,7 +5,6 @@ import java.util.Objects;
 
 /**
  * Models a linked list-backed collection of objects.
- * 
  * <p>
  * Duplicate elements are allowed. Storage of <code>null</code> references is
  * not allowed.
@@ -15,7 +14,7 @@ import java.util.Objects;
  * 
  * @see Collection
  */
-public class LinkedListIndexedCollection extends Collection {
+public class LinkedListIndexedCollection implements Collection {
 
 	/**
 	 * Current size of this collection - number of elements actually stored; number
@@ -370,13 +369,7 @@ public class LinkedListIndexedCollection extends Collection {
 	@Override
 	public Object[] toArray() {
 
-		/**
-		 * Helper class for generating array from collection's elements.
-		 * 
-		 * @author Luka Mesaric
-		 */
-		class ToArrayProcessor extends Processor {
-
+		var toArrayProcessor = new Processor() {
 			private Object[] elements = new Object[size];
 			private int index = 0;
 
@@ -387,20 +380,10 @@ public class LinkedListIndexedCollection extends Collection {
 			public void process(Object value) {
 				elements[index++] = value;
 			}
+		};
 
-			/**
-			 * Getter for generated array.
-			 * 
-			 * @return generated array
-			 */
-			private Object[] getArray() {
-				return elements;
-			}
-		}
-
-		ToArrayProcessor p = new ToArrayProcessor();
-		forEach(p);
-		return p.getArray();
+		forEach(toArrayProcessor);
+		return toArrayProcessor.elements;
 	}
 
 	/**

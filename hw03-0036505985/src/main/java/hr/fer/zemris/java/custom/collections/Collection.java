@@ -1,18 +1,11 @@
 package hr.fer.zemris.java.custom.collections;
 
 /**
- * Class represents any general collection of objects.
+ * Interface represents any general collection of objects.
  * 
  * @author Luka Mesaric
  */
-public class Collection {
-
-	/**
-	 * Default constructor.
-	 */
-	protected Collection() {
-		super();
-	}
+public interface Collection {
 
 	/**
 	 * Checks if collection is empty.
@@ -20,7 +13,7 @@ public class Collection {
 	 * @return <code>true</code> if collection contains no objects,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean isEmpty() {
+	default boolean isEmpty() {
 		return size() == 0;
 	}
 
@@ -29,18 +22,14 @@ public class Collection {
 	 * 
 	 * @return number of currently stored objects
 	 */
-	public int size() {
-		return 0;
-	}
+	int size();
 
 	/**
 	 * Adds the given object into this collection.
 	 * 
 	 * @param value object to add
 	 */
-	public void add(Object value) {
-		return;
-	}
+	void add(Object value);
 
 	/**
 	 * Checks if given object is contained inside this collection.
@@ -50,9 +39,7 @@ public class Collection {
 	 *         determined by {@link Object#equals(Object)}, <code>false</code>
 	 *         otherwise
 	 */
-	public boolean contains(Object value) {
-		return false;
-	}
+	boolean contains(Object value);
 
 	/**
 	 * Removes exactly one object equal to <code>value</code> from this collection,
@@ -64,20 +51,15 @@ public class Collection {
 	 * @return <code>true</code> only if an object was removed, <code>false</code>
 	 *         otherwise
 	 */
-	public boolean remove(Object value) {
-		return false;
-	}
+	boolean remove(Object value);
 
 	/**
 	 * Allocates a new array the size of this collection, fills it with collection
 	 * content and returns the array. This method never returns <code>null</code>.
 	 * 
 	 * @return collection content represented as an array of <code>Objects</code>
-	 * @throws UnsupportedOperationException if not overridden
 	 */
-	public Object[] toArray() {
-		throw new UnsupportedOperationException();
-	}
+	Object[] toArray();
 
 	/**
 	 * Calls {@link Processor#process(Object)} for each element of this collection.
@@ -88,9 +70,7 @@ public class Collection {
 	 * 
 	 * @throws NullPointerException if <code>processor</code> is <code>null</code>
 	 */
-	public void forEach(Processor processor) {
-		return;
-	}
+	void forEach(Processor processor);
 
 	/**
 	 * Method adds all elements from the given collection into the current
@@ -100,34 +80,14 @@ public class Collection {
 	 * 
 	 * @throws NullPointerException if <code>other</code> is <code>null</code>
 	 */
-	public void addAll(Collection other) {
-
-		/**
-		 * Helper local class for adding all values <code>other</code> into the current
-		 * collection.
-		 * 
-		 * @author Luka Mesaric
-		 */
-		class AddElementsProcessor extends Processor {
-
-			/**
-			 * Adds <code>value</code> to collection.
-			 */
-			@Override
-			public void process(Object value) {
-				add(value);
-			}
-		}
-
+	default void addAll(Collection other) {
 		Util.validateNotNull(other, "other");
-		other.forEach(new AddElementsProcessor());
+		other.forEach(this::add);
 	}
 
 	/**
 	 * Removes all elements from this collection.
 	 */
-	public void clear() {
-		return;
-	}
+	void clear();
 
 }

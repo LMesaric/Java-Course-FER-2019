@@ -5,7 +5,6 @@ import java.util.Objects;
 
 /**
  * Models an automatically resizable array-backed collection of objects.
- * 
  * <p>
  * Duplicate elements are allowed. Storage of <code>null</code> references is
  * not allowed.
@@ -15,7 +14,7 @@ import java.util.Objects;
  * 
  * @see Collection
  */
-public class ArrayIndexedCollection extends Collection {
+public class ArrayIndexedCollection implements Collection {
 
 	/**
 	 * Current size of this collection - number of elements actually stored in

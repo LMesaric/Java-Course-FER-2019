@@ -205,29 +205,23 @@ class ArrayIndexedCollectionTest {
 
 	@Test
 	void testForEach() {
-		class TestProcessor extends Processor {
+		var p = new Processor() {
 			private StringBuilder sb = new StringBuilder();
 
 			@Override
 			public void process(Object value) {
 				sb.append(value);
 			}
-
-			String getResult() {
-				return sb.toString();
-			}
-		}
+		};
 
 		ArrayIndexedCollection three = new ArrayIndexedCollection();
 		three.add("1");
 		three.add("2");
 		three.add("3");
 
-		TestProcessor p = new TestProcessor();
-
 		three.forEach(p);
 
-		assertEquals("123", p.getResult());
+		assertEquals("123", p.sb.toString());
 	}
 
 	@Test
