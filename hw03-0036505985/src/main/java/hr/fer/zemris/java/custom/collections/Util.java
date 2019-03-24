@@ -19,7 +19,7 @@ public final class Util {
 	 * 
 	 * @throws NullPointerException if <code>object</code> is <code>null</code>
 	 */
-	public static Object validateNotNull(Object object, String name) {
+	public static <T> T validateNotNull(T object, String name) {
 		return Objects.requireNonNull(object, "Argument '" + name + "' must not be null.");
 	}
 }
