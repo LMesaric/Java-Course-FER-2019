@@ -41,7 +41,7 @@ public class Lexer {
 	private LexerState state = LexerState.BASIC;
 
 	/**
-	 * Constant representing the character used a delimiter between different lexer
+	 * Constant representing the character used as delimiter between different lexer
 	 * states.
 	 */
 	public static final char STATE_CHANGE_DELIMITER = '#';
@@ -72,7 +72,7 @@ public class Lexer {
 
 	/**
 	 * Returns last generated token. It can be called as many times as wanted since
-	 * it will not trigger generation of next token.
+	 * it does not trigger generation of next token.
 	 *
 	 * @return last generated token, never <code>null</code>
 	 * 

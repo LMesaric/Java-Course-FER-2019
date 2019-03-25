@@ -6,5 +6,6 @@ package hr.fer.zemris.java.custom.scripting.nodes;
  * @author Luka Mesaric
  */
 public class DocumentNode extends Node {
+	//FIXME override equals i hash
 
 }
