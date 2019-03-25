@@ -47,7 +47,12 @@ public class SmartScriptLexer {
 	/**
 	 * Constant for a backslash character.
 	 */
-	public static final char BACKSLASH = '\\';
+	private static final char BACKSLASH = '\\';
+
+	/**
+	 * Constant for a minus character.
+	 */
+	private static final char MINUS = '-';
 
 	/**
 	 * Default constructor. Lexer starts tokenizing from the first character. By
@@ -234,10 +239,9 @@ public class SmartScriptLexer {
 			String fun = extractName();
 			token = new SmartScriptToken(SmartScriptTokenType.FUNCTION, fun);
 		} else if (isAtCurrentIndex('"')) {
-			currentIndex++;
 			String s = extractString();
 			token = new SmartScriptToken(SmartScriptTokenType.STRING, s);
-		} else if (isAtCurrentIndex('-')) {
+		} else if (isAtCurrentIndex(MINUS)) {
 			token = extractMinusOrNumberToken();
 		} else if (Character.isDigit(data[currentIndex])) {
 			token = extractNumberToken();
@@ -336,10 +340,10 @@ public class SmartScriptLexer {
 	 * @throws SmartScriptLexerException if token cannot be extracted
 	 */
 	private SmartScriptToken extractMinusOrNumberToken() {
-		if (isAtCurrentIndex('-')) {
+		if (isAtCurrentIndex(MINUS)) {
 			if (currentIndex + 1 >= data.length || !Character.isDigit(data[currentIndex + 1])) {
 				currentIndex++;
-				return new SmartScriptToken(SmartScriptTokenType.OPERATOR, "-");
+				return new SmartScriptToken(SmartScriptTokenType.OPERATOR, String.valueOf(MINUS));
 			} else {
 				return extractNumberToken();
 			}
@@ -358,13 +362,14 @@ public class SmartScriptLexer {
 	 */
 	private SmartScriptToken extractNumberToken() {
 		int start = currentIndex;
-		if (data[currentIndex] == '-') {
+		if (data[currentIndex] == MINUS) {
 			currentIndex++;
 		}
 		if (!skipDigits()) {
 			throw new SmartScriptLexerException("Could not extract a number from position " + start + " .");
 		}
 		if (isAtCurrentIndex('.')) {
+			currentIndex++;
 			if (!skipDigits()) {
 				throw new SmartScriptLexerException("Double value cannot end with a decimal point.");
 			}
