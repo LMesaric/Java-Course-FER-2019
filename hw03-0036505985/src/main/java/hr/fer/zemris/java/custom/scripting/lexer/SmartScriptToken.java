@@ -28,13 +28,16 @@ public class SmartScriptToken {
 	 * Default constructor.
 	 * 
 	 * @param type  token's type
-	 * @param value token's value, can be <code>null</code> for <code>EOF</code>
-	 *              type
+	 * @param value token's value, can be <code>null</code> only for
+	 *              <code>EOF</code> type
 	 * 
 	 * @throws NullPointerException if <code>type</code> is <code>null</code>
 	 */
 	public SmartScriptToken(SmartScriptTokenType type, Object value) {
 		this.type = Util.validateNotNull(type, "type");
+		if (type != SmartScriptTokenType.EOF) {
+			Util.validateNotNull(value, "value");
+		}
 		this.value = value;
 	}
 

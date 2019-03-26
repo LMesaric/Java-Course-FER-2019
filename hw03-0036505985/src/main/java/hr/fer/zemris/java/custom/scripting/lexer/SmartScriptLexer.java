@@ -365,12 +365,12 @@ public class SmartScriptLexer {
 		if (data[currentIndex] == MINUS) {
 			currentIndex++;
 		}
-		if (!skipDigits()) {
+		if (skipDigits() <= 0) {
 			throw new SmartScriptLexerException("Could not extract a number from position " + start + " .");
 		}
 		if (isAtCurrentIndex('.')) {
 			currentIndex++;
-			if (!skipDigits()) {
+			if (skipDigits() <= 0) {
 				throw new SmartScriptLexerException("Double value cannot end with a decimal point.");
 			}
 			String d = new String(data, start, currentIndex - start);
@@ -383,7 +383,7 @@ public class SmartScriptLexer {
 		} else {
 			String d = new String(data, start, currentIndex - start);
 			try {
-				double num = Integer.parseInt(d);
+				int num = Integer.parseInt(d);
 				return new SmartScriptToken(SmartScriptTokenType.INTEGER, num);
 			} catch (NumberFormatException e) {
 				throw new SmartScriptLexerException("Could not extract 'int' from position " + start + " .", e);
@@ -394,15 +394,15 @@ public class SmartScriptLexer {
 	/**
 	 * Skips all digits by increasing <code>currentIndex</code>.
 	 * 
-	 * @return <code>false</code> if not a single digit could be skipped,
-	 *         <code>true</code> if at least one digit was skipped
+	 * @return number of digits that were skipped; <code>0</code> if not a single
+	 *         digit was skipped
 	 */
-	private boolean skipDigits() {
+	private int skipDigits() {
 		int before = currentIndex;
 		while (isCurrentPositionLegal() && Character.isDigit(data[currentIndex])) {
 			currentIndex++;
 		}
-		return before != currentIndex;
+		return currentIndex - before;
 	}
 
 	/**

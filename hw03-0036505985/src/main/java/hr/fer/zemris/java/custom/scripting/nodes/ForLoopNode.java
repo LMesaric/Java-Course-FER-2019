@@ -1,5 +1,7 @@
 package hr.fer.zemris.java.custom.scripting.nodes;
 
+import java.util.Objects;
+
 import hr.fer.zemris.java.custom.collections.Util;
 import hr.fer.zemris.java.custom.scripting.elems.Element;
 import hr.fer.zemris.java.custom.scripting.elems.ElementVariable;
@@ -98,6 +100,47 @@ public class ForLoopNode extends Node {
 	 */
 	public Element getStepExpression() {
 		return stepExpression;
+	}
+
+	@Override
+	public String toString() {
+		String forTag = String.format("{$ FOR %s %s %s %s$}", variable.asText(), startExpression.asText(),
+				endExpression.asText(), stepExpression != null ? stepExpression.asText() + " " : "");
+		String endTag = "{$END$}";
+
+		StringBuilder children = new StringBuilder();
+		for (int i = 0, size = numberOfChildren(); i < size; i++) {
+			Node child = getChild(i);
+			children.append(child.toString());
+		}
+
+		return forTag + children.toString() + endTag;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(endExpression, startExpression, stepExpression, variable);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof ForLoopNode)) {
+			return false;
+		}
+		ForLoopNode other = (ForLoopNode) obj;
+		return Objects.equals(endExpression, other.endExpression)
+				&& Objects.equals(startExpression, other.startExpression)
+				&& Objects.equals(stepExpression, other.stepExpression) 
+				&& Objects.equals(variable, other.variable);
 	}
 
 }

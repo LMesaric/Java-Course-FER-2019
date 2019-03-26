@@ -14,6 +14,11 @@ public enum SmartScriptTokenType {
 	EOF,
 
 	/**
+	 * Token is a plain text, type <code>String</code>.
+	 */
+	PLAIN_TEXT,
+
+	/**
 	 * Token is an open tag, type <code>String</code>.
 	 */
 	OPEN_TAG,
@@ -24,20 +29,15 @@ public enum SmartScriptTokenType {
 	CLOSE_TAG,
 
 	/**
-	 * Token is a plain text, type <code>String</code>.
-	 */
-	PLAIN_TEXT,
-
-	/**
 	 * Token is a tag name, type <code>String</code>.
 	 */
 	TAG_NAME,
-	
+
 	/**
 	 * Token is a variable name, type <code>String</code>.
 	 */
 	VARIABLE,
-	
+
 	/**
 	 * Token is a function name, type <code>String</code>.
 	 */

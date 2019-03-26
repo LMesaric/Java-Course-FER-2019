@@ -1,5 +1,7 @@
 package hr.fer.zemris.java.custom.scripting.elems;
 
+import java.util.Objects;
+
 import hr.fer.zemris.java.custom.collections.Util;
 
 /**
@@ -37,6 +39,23 @@ public class ElementVariable extends Element {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof ElementVariable)) {
+			return false;
+		}
+		ElementVariable other = (ElementVariable) obj;
+		return Objects.equals(name, other.name);
 	}
 
 }

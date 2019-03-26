@@ -1,5 +1,7 @@
 package hr.fer.zemris.java.custom.scripting.elems;
 
+import java.util.Objects;
+
 import hr.fer.zemris.java.custom.collections.Util;
 
 /**
@@ -37,6 +39,23 @@ public class ElementOperator extends Element {
 	 */
 	public String getSymbol() {
 		return symbol;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(symbol);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof ElementOperator)) {
+			return false;
+		}
+		ElementOperator other = (ElementOperator) obj;
+		return Objects.equals(symbol, other.symbol);
 	}
 
 }

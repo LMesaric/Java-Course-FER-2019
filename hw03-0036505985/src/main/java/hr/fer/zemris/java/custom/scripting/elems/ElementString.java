@@ -1,5 +1,7 @@
 package hr.fer.zemris.java.custom.scripting.elems;
 
+import java.util.Objects;
+
 import hr.fer.zemris.java.custom.collections.Util;
 
 /**
@@ -25,6 +27,9 @@ public class ElementString extends Element {
 		this.value = Util.validateNotNull(value, "value");
 	}
 
+	/**
+	 * {@inheritDoc} Quotation marks are added around its value.
+	 */
 	@Override
 	public String asText() {
 		return "\"" + value + "\"";
@@ -37,6 +42,23 @@ public class ElementString extends Element {
 	 */
 	public String getValue() {
 		return value;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(value);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof ElementString)) {
+			return false;
+		}
+		ElementString other = (ElementString) obj;
+		return Objects.equals(value, other.value);
 	}
 
 }
