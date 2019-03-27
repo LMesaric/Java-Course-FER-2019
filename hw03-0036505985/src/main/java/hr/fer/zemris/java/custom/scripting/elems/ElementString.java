@@ -28,11 +28,15 @@ public class ElementString extends Element {
 	}
 
 	/**
-	 * {@inheritDoc} Quotation marks are added around its value.
+	 * {@inheritDoc} Quotation marks are added around its value. Backslashes and
+	 * quotation marks are escaped.
 	 */
 	@Override
 	public String asText() {
-		return "\"" + value + "\"";
+		// "\\\\" in plain text is "\\" which regex treats as if it were "\"
+		// "\\\\\\\\" in plain text is "\\\\" which regex treats as if it were "\\"
+		String replaced = value.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\"");
+		return "\"" + replaced + "\"";
 	}
 
 	/**

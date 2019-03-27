@@ -11,8 +11,13 @@ import org.junit.jupiter.api.Test;
  */
 class SmartScriptLexerTest {
 
-	// Helper method for checking if lexer generates the same stream of tokens
-	// as the given stream.
+	/**
+	 * Helper method for checking if lexer generates the same stream of tokens as
+	 * the given stream.
+	 * 
+	 * @param lexer
+	 * @param correctData
+	 */
 	private void checkTokenStream(SmartScriptLexer lexer, SmartScriptToken[] correctData) {
 		int counter = 0;
 		for (SmartScriptToken expected : correctData) {
@@ -29,7 +34,9 @@ class SmartScriptLexerTest {
 	}
 
 	/*
+	 * 
 	 * STATE: SmartScriptLexerState.TEXT
+	 * 
 	 */
 
 	@Test
@@ -117,7 +124,7 @@ class SmartScriptLexerTest {
 
 		assertThrows(SmartScriptLexerException.class, () -> lexer.nextToken());
 	}
-	
+
 	@Test
 	void testNeverEndingEscapeSequence() {
 		String s = "Example $=1$}.\\";
@@ -127,7 +134,9 @@ class SmartScriptLexerTest {
 	}
 
 	/*
+	 * 
 	 * STATE: SmartScriptLexerState.TAG_NAME
+	 * 
 	 */
 
 	@Test
@@ -214,7 +223,9 @@ class SmartScriptLexerTest {
 	}
 
 	/*
+	 * 
 	 * STATE: SmartScriptLexerState.TAG_BODY
+	 * 
 	 */
 
 	@Test
@@ -263,7 +274,7 @@ class SmartScriptLexerTest {
 		String s = "  \" 4\\\"2 \\n \\\\ \"";
 		SmartScriptLexer lexer = new SmartScriptLexer(s);
 		lexer.setState(SmartScriptLexerState.TAG_BODY);
-		assertEquals(new SmartScriptToken(SmartScriptTokenType.STRING, " 4\"2 \n \\ "),lexer.nextToken());
+		assertEquals(new SmartScriptToken(SmartScriptTokenType.STRING, " 4\"2 \n \\ "), lexer.nextToken());
 	}
 
 	@Test
@@ -273,7 +284,7 @@ class SmartScriptLexerTest {
 		lexer.setState(SmartScriptLexerState.TAG_BODY);
 		assertThrows(SmartScriptLexerException.class, () -> lexer.nextToken());
 	}
-	
+
 	@Test
 	void testTagBodyIncorrectEscapeSequence() {
 		String s = "  \"a\\bc\" ";

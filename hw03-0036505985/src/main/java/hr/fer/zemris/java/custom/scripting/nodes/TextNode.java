@@ -36,9 +36,20 @@ public class TextNode extends Node {
 		return text;
 	}
 
+	/**
+	 * Escapes any backslashes and open curly braces located directly before a
+	 * dollar sign. <code>\n</code>, <code>\r</code> and <code>\t</code> are not
+	 * escaped because it cannot be determined whether they were originally escaped
+	 * characters or direct ASCII values.
+	 */
 	@Override
 	public String toString() {
-		return text;
+		// I am deeply sorry, but it was fun to play with.
+		// "\\\\" in plain text is "\\" which regex treats as if it were "\"
+		// "\\\\\\\\" in plain text is "\\\\" which regex treats as if it were "\\"
+		// "\\{\\$" in plain text is "\{\$" which regex treats as if it were "{$"
+		// "\\\\{\\$" in plain text is "\\{\$" which regex treats as if it were "\{$"
+		return text.replaceAll("\\\\", "\\\\\\\\").replaceAll("\\{\\$", "\\\\{\\$");
 	}
 
 	@Override

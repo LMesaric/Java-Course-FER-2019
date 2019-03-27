@@ -101,16 +101,10 @@ public class SmartScriptParser {
 	private DocumentNode parseDocumentClean() {
 		try {
 			return parseDocument();
-		} catch (SmartScriptParserException parserEx) {
-			// re-throw exception because of last catch block
-			throw parserEx;
 		} catch (SmartScriptLexerException lexerEx) {
-			// this is an expected exception, happens when a string is not terminated or
+			// this is an expected exception, it happens when a string is not terminated or
 			// escape sequence is not valid etc.
 			throw new SmartScriptParserException(lexerEx.getMessage(), lexerEx);
-		} catch (Exception ex) {
-			// this should never execute, but let's use it just in case :)
-			throw new SmartScriptParserException(ex.getMessage(), ex);
 		}
 	}
 
