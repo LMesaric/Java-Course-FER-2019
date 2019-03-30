@@ -3,9 +3,13 @@ package hr.fer.zemris.java.custom.collections;
 /**
  * Represents a collection of objects stored in an ordered list.
  * 
+ * @param <E> the type of elements stored in this list
+ * 
  * @author Luka Mesaric
+ * 
+ * @see Collection
  */
-public interface List extends Collection {
+public interface List<E> extends Collection<E> {
 
 	/**
 	 * Returns the object that is stored in the list at position <code>index</code>.
@@ -18,7 +22,7 @@ public interface List extends Collection {
 	 *                                   <code>0</code> or greater than
 	 *                                   <code>size-1</code>
 	 */
-	Object get(int index);
+	E get(int index);
 
 	/**
 	 * Inserts the given <code>value</code> at the given <code>position</code>.
@@ -32,7 +36,7 @@ public interface List extends Collection {
 	 *                                   <code>0</code> or greater than
 	 *                                   <code>size</code>
 	 */
-	void insert(Object value, int position);
+	void insert(E value, int position);
 
 	/**
 	 * Searches the list and returns the index of the first occurrence of the given

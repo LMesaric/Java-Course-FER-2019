@@ -7,14 +7,11 @@ import hr.fer.zemris.java.custom.collections.Tester;
  * 
  * @author Luka Mesaric
  */
-class EvenIntegerTester implements Tester {
+class EvenIntegerTester implements Tester<Integer> {
 
 	@Override
-	public boolean test(Object obj) {
-		if (!(obj instanceof Integer))
-			return false;
-		Integer i = (Integer) obj;
-		return i % 2 == 0;
+	public boolean test(Integer obj) {
+		return obj % 2 == 0;
 	}
 
 }

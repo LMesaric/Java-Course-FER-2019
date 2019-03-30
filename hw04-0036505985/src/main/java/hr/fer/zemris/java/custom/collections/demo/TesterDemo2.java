@@ -13,8 +13,8 @@ import hr.fer.zemris.java.custom.collections.Tester;
 public class TesterDemo2 {
 
 	public static void main(String[] args) {
-		Collection col1 = new LinkedListIndexedCollection();
-		Collection col2 = new ArrayIndexedCollection();
+		Collection<Integer> col1 = new LinkedListIndexedCollection<>();
+		Collection<Integer> col2 = new ArrayIndexedCollection<>();
 
 		col1.add(2);
 		col1.add(3);

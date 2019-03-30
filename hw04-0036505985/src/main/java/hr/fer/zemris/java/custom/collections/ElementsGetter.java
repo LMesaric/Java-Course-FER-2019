@@ -8,9 +8,11 @@ import java.util.NoSuchElementException;
  * collection in linear time. Changing the collection during iteration is not
  * allowed.
  * 
+ * @param <E> the type of elements returned by this elements getter
+ * 
  * @author Luka Mesaric
  */
-public interface ElementsGetter {
+public interface ElementsGetter<E> {
 
 	/**
 	 * Checks if there are any elements that have not yet been used (visited).
@@ -37,7 +39,7 @@ public interface ElementsGetter {
 	 *                                         <code>ElementsGetter</code> was
 	 *                                         created
 	 */
-	Object getNextElement();
+	E getNextElement();
 
 	/**
 	 * Processes all remaining elements using the supplied <code>Processor</code>.
@@ -51,10 +53,10 @@ public interface ElementsGetter {
 	 *                                         <code>ElementsGetter</code> was
 	 *                                         created
 	 */
-	default void processRemaining(Processor p) {
+	default void processRemaining(Processor<? super E> p) {
 		Util.validateNotNull(p, "p");
-		while (this.hasNextElement()) {
-			p.process(this.getNextElement());
+		while (hasNextElement()) {
+			p.process(getNextElement());
 		}
 	}
 

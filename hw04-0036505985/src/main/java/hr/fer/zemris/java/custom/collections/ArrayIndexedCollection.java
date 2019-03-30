@@ -12,11 +12,13 @@ import java.util.Objects;
  * not allowed.
  * </p>
  * 
+ * @param <E> the type of elements stored in this list
+ * 
  * @author Luka Mesaric
  * 
  * @see Collection
  */
-public class ArrayIndexedCollection implements List {
+public class ArrayIndexedCollection<E> implements List<E> {
 
 	/**
 	 * Current size of this collection - number of elements actually stored in
@@ -28,7 +30,7 @@ public class ArrayIndexedCollection implements List {
 	 * An array of object references whose length is determined by
 	 * <code>capacity</code> argument of (some) constructors.
 	 */
-	private Object[] elements;
+	private E[] elements;
 
 	/**
 	 * Counter of modifications of data stored in this collection. Must be
@@ -64,9 +66,10 @@ public class ArrayIndexedCollection implements List {
 	 * @throws IllegalArgumentException if <code>initialCapacity</code> is less than
 	 *                                  <code>1</code>
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayIndexedCollection(int initialCapacity) {
 		validateCapacity(initialCapacity);
-		elements = new Object[initialCapacity];
+		elements = (E[]) new Object[initialCapacity];
 	}
 
 	/**
@@ -80,7 +83,7 @@ public class ArrayIndexedCollection implements List {
 	 *                              if any element in <code>other</code> is
 	 *                              <code>null</code>
 	 */
-	public ArrayIndexedCollection(Collection other) {
+	public ArrayIndexedCollection(Collection<? extends E> other) {
 		/*
 		 * Avoiding the problem where 'elements.length' could be 0 after using an empty
 		 * collection, and resizing would then have no effect (0*2=0).
@@ -104,7 +107,7 @@ public class ArrayIndexedCollection implements List {
 	 * @throws IllegalArgumentException if <code>initialCapacity</code> is less than
 	 *                                  <code>1</code>
 	 */
-	public ArrayIndexedCollection(Collection other, int initialCapacity) {
+	public ArrayIndexedCollection(Collection<? extends E> other, int initialCapacity) {
 		this(validateConstructorInput(other, initialCapacity));
 		addAll(other);
 	}
@@ -121,8 +124,8 @@ public class ArrayIndexedCollection implements List {
 	 * @throws IllegalArgumentException if <code>initialCapacity</code> is less than
 	 *                                  <code>1</code>
 	 */
-	private static int validateConstructorInput(Collection other, int initialCapacity) {
-		Collection validatedCol = (Collection) Util.validateNotNull(other, "other");
+	private static int validateConstructorInput(Collection<?> other, int initialCapacity) {
+		Collection<?> validatedCol = Util.validateNotNull(other, "other");
 		int collectionSize = validatedCol.size();
 		int validatedCapacity = validateCapacity(initialCapacity);
 		return Math.max(collectionSize, validatedCapacity);
@@ -160,7 +163,7 @@ public class ArrayIndexedCollection implements List {
 	 * @throws NullPointerException if <code>value</code> is <code>null</code>
 	 */
 	@Override
-	public void add(Object value) {
+	public void add(E value) {
 		Util.validateNotNull(value, "value");
 		increaseCapacityIfNeeded();
 
@@ -186,7 +189,7 @@ public class ArrayIndexedCollection implements List {
 	 *                                   <code>size</code>
 	 */
 	@Override
-	public void insert(Object value, int position) {
+	public void insert(E value, int position) {
 		Util.validateNotNull(value, "value");
 		Objects.checkIndex(position, size + 1);
 		increaseCapacityIfNeeded();
@@ -226,7 +229,7 @@ public class ArrayIndexedCollection implements List {
 	 *                                   <code>size-1</code>
 	 */
 	@Override
-	public Object get(int index) {
+	public E get(int index) {
 		return elements[Objects.checkIndex(index, size)];
 	}
 
@@ -325,8 +328,8 @@ public class ArrayIndexedCollection implements List {
 	}
 
 	@Override
-	public ElementsGetter createElementsGetter() {
-		return new ArrayElementsGetter(this);
+	public ElementsGetter<E> createElementsGetter() {
+		return new ArrayElementsGetter();
 	}
 
 	/**
@@ -335,12 +338,7 @@ public class ArrayIndexedCollection implements List {
 	 * 
 	 * @author Luka Mesaric
 	 */
-	private static class ArrayElementsGetter implements ElementsGetter {
-
-		/**
-		 * Collection to iterate over.
-		 */
-		private final ArrayIndexedCollection data;
+	private class ArrayElementsGetter implements ElementsGetter<E> {
 
 		/**
 		 * Index of element to return next.
@@ -355,15 +353,9 @@ public class ArrayIndexedCollection implements List {
 
 		/**
 		 * Default constructor.
-		 * 
-		 * @param data collection to iterate over
-		 * 
-		 * @throws NullPointerException if <code>data</code> is <code>null</code>
 		 */
-		public ArrayElementsGetter(ArrayIndexedCollection data) {
-			Util.validateNotNull(data, "data");
-			this.data = data;
-			this.savedModificationCount = data.modificationCount;
+		public ArrayElementsGetter() {
+			this.savedModificationCount = modificationCount;
 		}
 
 		/**
@@ -373,10 +365,10 @@ public class ArrayIndexedCollection implements List {
 		 */
 		@Override
 		public boolean hasNextElement() {
-			if (savedModificationCount != data.modificationCount) {
+			if (savedModificationCount != modificationCount) {
 				throw new ConcurrentModificationException("Collection was changed since this iterator was created.");
 			}
-			return currentPosition < data.size;
+			return currentPosition < size;
 		}
 
 		/**
@@ -386,11 +378,11 @@ public class ArrayIndexedCollection implements List {
 		 * @throws ConcurrentModificationException {@inheritDoc}
 		 */
 		@Override
-		public Object getNextElement() {
+		public E getNextElement() {
 			if (!hasNextElement()) {
 				throw new NoSuchElementException("All elements of this collection have been used.");
 			}
-			return data.elements[currentPosition++];
+			return elements[currentPosition++];
 		}
 
 	}
@@ -406,8 +398,8 @@ public class ArrayIndexedCollection implements List {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Arrays.deepHashCode(toArray());
-		result = prime * result + Objects.hash(size);
+		result = prime * result + Arrays.deepHashCode(elements);
+		result = prime * result + Objects.hash(modificationCount, size);
 		return result;
 	}
 
@@ -419,8 +411,8 @@ public class ArrayIndexedCollection implements List {
 		if (!(obj instanceof ArrayIndexedCollection)) {
 			return false;
 		}
-		ArrayIndexedCollection other = (ArrayIndexedCollection) obj;
-		return (size == other.size) && Arrays.deepEquals(this.toArray(), other.toArray());
+		ArrayIndexedCollection<?> other = (ArrayIndexedCollection<?>) obj;
+		return (size == other.size) && Arrays.equals(this.elements, 0, this.size, other.elements, 0, other.size);
 	}
 
 }

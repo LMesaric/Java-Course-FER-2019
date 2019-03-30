@@ -15,51 +15,51 @@ import org.junit.jupiter.api.Test;
  */
 class ArrayIndexedCollectionTest {
 
-	private static ArrayIndexedCollection empty;
-	private static ArrayIndexedCollection one;
-	private static ArrayIndexedCollection ten;
+	private static ArrayIndexedCollection<String> empty;
+	private static ArrayIndexedCollection<String> one;
+	private static ArrayIndexedCollection<String> ten;
 
 	@BeforeEach
 	void setUp() {
-		empty = new ArrayIndexedCollection();
+		empty = new ArrayIndexedCollection<>();
 
-		one = new ArrayIndexedCollection();
+		one = new ArrayIndexedCollection<>();
 		one.add("hey");
 
-		ten = new ArrayIndexedCollection();
+		ten = new ArrayIndexedCollection<>();
 		ten.add("hey");
-		ten.add(12);
-		ten.add(-5);
-		ten.add(4.25);
+		ten.add("12");
+		ten.add("-5");
+		ten.add("4.25");
 		ten.add("hey");
-		ten.add(true);
-		ten.add(false);
-		ten.add(new ArrayIndexedCollection());
-		ten.add(24L);
+		ten.add("true");
+		ten.add("false");
+		ten.add("");
+		ten.add("24L");
 		ten.add("text");
 	}
 
 	@Test
 	void testConstructors() {
-		assertThrows(IllegalArgumentException.class, () -> new ArrayIndexedCollection(0));
-		assertThrows(NullPointerException.class, () -> new ArrayIndexedCollection(null));
+		assertThrows(IllegalArgumentException.class, () -> new ArrayIndexedCollection<>(0));
+		assertThrows(NullPointerException.class, () -> new ArrayIndexedCollection<>(null));
 
-		assertThrows(NullPointerException.class, () -> new ArrayIndexedCollection(null, 10));
-		assertThrows(IllegalArgumentException.class, () -> new ArrayIndexedCollection(one, 0));
+		assertThrows(NullPointerException.class, () -> new ArrayIndexedCollection<>(null, 10));
+		assertThrows(IllegalArgumentException.class, () -> new ArrayIndexedCollection<>(one, 0));
 
-		ArrayIndexedCollection emptyFirst = new ArrayIndexedCollection(10);
+		ArrayIndexedCollection<String> emptyFirst = new ArrayIndexedCollection<>(10);
 		assertEquals(0, emptyFirst.size());
 
-		ArrayIndexedCollection emptySecond = new ArrayIndexedCollection(empty);
+		ArrayIndexedCollection<String> emptySecond = new ArrayIndexedCollection<>(empty);
 		assertEquals(0, emptySecond.size());
 
-		ArrayIndexedCollection emptyThird = new ArrayIndexedCollection(empty, 100);
+		ArrayIndexedCollection<String> emptyThird = new ArrayIndexedCollection<>(empty, 100);
 		assertEquals(0, emptyThird.size());
 
-		ArrayIndexedCollection tenFirst = new ArrayIndexedCollection(ten, 100);
+		ArrayIndexedCollection<String> tenFirst = new ArrayIndexedCollection<>(ten, 100);
 		assertEquals(10, tenFirst.size());
 
-		ArrayIndexedCollection tenSecond = new ArrayIndexedCollection(ten, 1);
+		ArrayIndexedCollection<String> tenSecond = new ArrayIndexedCollection<>(ten, 1);
 		assertEquals(10, tenSecond.size());
 	}
 
@@ -82,7 +82,7 @@ class ArrayIndexedCollectionTest {
 		assertThrows(NullPointerException.class, () -> empty.add(null));
 
 		for (int i = 1; i <= 1000; i++) {
-			empty.add(1);
+			empty.add("1");
 			assertEquals(i, empty.size());
 		}
 
@@ -138,7 +138,7 @@ class ArrayIndexedCollectionTest {
 		assertThrows(IndexOutOfBoundsException.class, () -> one.get(-1));
 
 		assertEquals("hey", one.get(0));
-		assertEquals(24L, ten.get(8));
+		assertEquals("24L", ten.get(8));
 	}
 
 	@Test
@@ -146,7 +146,7 @@ class ArrayIndexedCollectionTest {
 		assertEquals(-1, empty.indexOf(null));
 		assertEquals(-1, empty.indexOf("text"));
 
-		assertEquals(2, ten.indexOf(-5));
+		assertEquals(2, ten.indexOf("-5"));
 		assertEquals(9, ten.indexOf("text"));
 		assertEquals(0, ten.indexOf("hey"));
 	}
@@ -159,7 +159,6 @@ class ArrayIndexedCollectionTest {
 		assertFalse(ten.contains("heyyyy")); // She wants you :)
 
 		assertTrue(ten.contains("hey")); // Just friends :(
-		assertTrue(ten.contains(new ArrayIndexedCollection()));
 	}
 
 	@Test
@@ -205,7 +204,7 @@ class ArrayIndexedCollectionTest {
 
 	@Test
 	void testForEach() {
-		var p = new Processor() {
+		var p = new Processor<>() {
 			private StringBuilder sb = new StringBuilder();
 
 			@Override
@@ -214,7 +213,7 @@ class ArrayIndexedCollectionTest {
 			}
 		};
 
-		ArrayIndexedCollection three = new ArrayIndexedCollection();
+		ArrayIndexedCollection<String> three = new ArrayIndexedCollection<>();
 		three.add("1");
 		three.add("2");
 		three.add("3");
@@ -226,12 +225,12 @@ class ArrayIndexedCollectionTest {
 
 	@Test
 	void testEquals() {
-		assertEquals(ten, new ArrayIndexedCollection(ten));
+		assertEquals(ten, new ArrayIndexedCollection<>(ten));
 	}
 
 	@Test
 	void testHashCode() {
-		assertEquals(ten.hashCode(), new ArrayIndexedCollection(ten).hashCode());
+		assertEquals(ten.hashCode(), new ArrayIndexedCollection<>(ten).hashCode());
 	}
 
 }

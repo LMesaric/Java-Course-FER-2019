@@ -13,17 +13,17 @@ import hr.fer.zemris.java.custom.collections.LinkedListIndexedCollection;
 public class CollectionDemo4 {
 
 	public static void main(String[] args) {
-		demo(new ArrayIndexedCollection());
+		demo(new ArrayIndexedCollection<String>());
 		System.out.println();
-		demo(new LinkedListIndexedCollection());
+		demo(new LinkedListIndexedCollection<String>());
 	}
 
-	public static void demo(Collection col) {
+	public static void demo(Collection<String> col) {
 		col.add("Ivo");
 		col.add("Ana");
 		col.add("Jasna");
-		ElementsGetter getter1 = col.createElementsGetter();
-		ElementsGetter getter2 = col.createElementsGetter();
+		ElementsGetter<String> getter1 = col.createElementsGetter();
+		ElementsGetter<String> getter2 = col.createElementsGetter();
 		System.out.println("Jedan element: " + getter1.getNextElement());
 		System.out.println("Jedan element: " + getter1.getNextElement());
 		System.out.println("Jedan element: " + getter2.getNextElement());

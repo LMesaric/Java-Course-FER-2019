@@ -12,11 +12,13 @@ import java.util.Objects;
  * not allowed.
  * </p>
  * 
+ * @param <E> the type of elements stored in this list
+ * 
  * @author Luka Mesaric
  * 
  * @see Collection
  */
-public class LinkedListIndexedCollection implements List {
+public class LinkedListIndexedCollection<E> implements List<E> {
 
 	/**
 	 * Current size of this collection - number of elements actually stored; number
@@ -27,12 +29,12 @@ public class LinkedListIndexedCollection implements List {
 	/**
 	 * Reference to the first node of this linked list.
 	 */
-	private ListNode first = null;
+	private ListNode<E> first = null;
 
 	/**
 	 * Reference to the last node of this linked list.
 	 */
-	private ListNode last = null;
+	private ListNode<E> last = null;
 
 	/**
 	 * Counter of modifications of data stored in this collection. Must be
@@ -44,24 +46,26 @@ public class LinkedListIndexedCollection implements List {
 	 * Models a single node used for storing data in
 	 * {@link LinkedListIndexedCollection}.
 	 * 
+	 * @param <T> the type of value stored in this node
+	 * 
 	 * @author Luka Mesaric
 	 */
-	private static class ListNode {
+	private static class ListNode<T> {
 
 		/**
 		 * Reference to previous node in list.
 		 */
-		private ListNode previous;
+		private ListNode<T> previous;
 
 		/**
 		 * Reference to next node in list.
 		 */
-		private ListNode next;
+		private ListNode<T> next;
 
 		/**
 		 * Value stored in this node.
 		 */
-		private Object value;
+		private T value;
 
 		/**
 		 * Default constructor.
@@ -70,7 +74,7 @@ public class LinkedListIndexedCollection implements List {
 		 * @param next     next node
 		 * @param value    value stored in node
 		 */
-		private ListNode(ListNode previous, ListNode next, Object value) {
+		private ListNode(ListNode<T> previous, ListNode<T> next, T value) {
 			this.previous = previous;
 			this.next = next;
 			this.value = value;
@@ -82,7 +86,7 @@ public class LinkedListIndexedCollection implements List {
 		 * 
 		 * @param value value stored in node
 		 */
-		private ListNode(Object value) {
+		private ListNode(T value) {
 			this(null, null, value);
 		}
 
@@ -91,14 +95,16 @@ public class LinkedListIndexedCollection implements List {
 	/**
 	 * Data class for storing <code>ListNode - index</code> pairs.
 	 * 
+	 * @param <T> the type of value stored in this pair
+	 * 
 	 * @author Luka Mesaric
 	 */
-	private static class IndexNodePair {
+	private static class IndexNodePair<T> {
 
 		/**
 		 * Node from <code>ListNode - index</code> pair.
 		 */
-		private ListNode node;
+		private ListNode<T> node;
 
 		/**
 		 * Node index from <code>ListNode - index</code> pair.
@@ -111,7 +117,7 @@ public class LinkedListIndexedCollection implements List {
 		 * @param node      node
 		 * @param nodeIndex node index
 		 */
-		private IndexNodePair(ListNode node, int nodeIndex) {
+		private IndexNodePair(ListNode<T> node, int nodeIndex) {
 			this.node = node;
 			this.nodeIndex = nodeIndex;
 		}
@@ -133,8 +139,9 @@ public class LinkedListIndexedCollection implements List {
 	 *                              if any element in <code>other</code> is
 	 *                              <code>null</code>
 	 */
-	public LinkedListIndexedCollection(Collection other) {
-		addAll(other);
+	public LinkedListIndexedCollection(Collection<? extends E> other) {
+		this();
+		addAll(Util.validateNotNull(other, "other"));
 	}
 
 	@Override
@@ -151,10 +158,10 @@ public class LinkedListIndexedCollection implements List {
 	 * @throws NullPointerException if <code>value</code> is <code>null</code>
 	 */
 	@Override
-	public void add(Object value) {
+	public void add(E value) {
 		Util.validateNotNull(value, "value");
 
-		ListNode newNode = new ListNode(value);
+		ListNode<E> newNode = new ListNode<>(value);
 
 		if (first == null) {
 			first = last = newNode;
@@ -185,12 +192,12 @@ public class LinkedListIndexedCollection implements List {
 	 *                                   <code>size</code>
 	 */
 	@Override
-	public void insert(Object value, int position) {
+	public void insert(E value, int position) {
 
 		Util.validateNotNull(value, "value");
 		Objects.checkIndex(position, size + 1);
 
-		ListNode newNode = new ListNode(value);
+		ListNode<E> newNode = new ListNode<>(value);
 
 		if (first == null) {
 			first = last = newNode;
@@ -203,7 +210,7 @@ public class LinkedListIndexedCollection implements List {
 			last.next = newNode;
 			last = newNode;
 		} else {
-			ListNode current = getNode(position).node;
+			ListNode<E> current = getNode(position).node;
 
 			newNode.previous = current.previous;
 			newNode.next = current;
@@ -231,7 +238,7 @@ public class LinkedListIndexedCollection implements List {
 	 *                                   <code>size-1</code>
 	 */
 	@Override
-	public Object get(int index) {
+	public E get(int index) {
 		return getNode(index).node.value;
 	}
 
@@ -246,10 +253,10 @@ public class LinkedListIndexedCollection implements List {
 	 *                                   <code>0</code> or greater than
 	 *                                   <code>size-1</code>
 	 */
-	private IndexNodePair getNode(int index) {
+	private IndexNodePair<E> getNode(int index) {
 		Objects.checkIndex(index, size);
 
-		ListNode current;
+		ListNode<E> current;
 		if (index <= size / 2) {
 			current = first;
 			for (int i = 0; i < index; i++) {
@@ -261,7 +268,7 @@ public class LinkedListIndexedCollection implements List {
 				current = current.previous;
 			}
 		}
-		return new IndexNodePair(current, index);
+		return new IndexNodePair<>(current, index);
 	}
 
 	/**
@@ -279,15 +286,15 @@ public class LinkedListIndexedCollection implements List {
 	 *         <code>null</code> if the <code>value</code> was not found or
 	 *         <code>value</code> was <code>null</code>
 	 */
-	private IndexNodePair getNode(Object value) {
+	private IndexNodePair<E> getNode(Object value) {
 		if (value == null) {
 			return null;
 		}
 
-		ListNode current = first;
+		ListNode<E> current = first;
 		for (int i = 0; current != null; i++) {
 			if (Objects.equals(current.value, value)) {
-				return new IndexNodePair(current, i);
+				return new IndexNodePair<>(current, i);
 			}
 			current = current.next;
 		}
@@ -309,7 +316,7 @@ public class LinkedListIndexedCollection implements List {
 	 */
 	@Override
 	public int indexOf(Object value) {
-		IndexNodePair pair = getNode(value);
+		IndexNodePair<E> pair = getNode(value);
 		return pair != null ? pair.nodeIndex : -1;
 	}
 
@@ -351,7 +358,7 @@ public class LinkedListIndexedCollection implements List {
 			last = last.previous;
 			last.next = null;
 		} else {
-			ListNode current = getNode(index).node;
+			ListNode<E> current = getNode(index).node;
 			current.previous.next = current.next;
 			current.next.previous = current.previous;
 
@@ -371,7 +378,7 @@ public class LinkedListIndexedCollection implements List {
 	 */
 	@Override
 	public boolean remove(Object value) {
-		IndexNodePair pair = getNode(value);
+		IndexNodePair<E> pair = getNode(value);
 
 		if (pair == null) {
 			return false;
@@ -384,7 +391,7 @@ public class LinkedListIndexedCollection implements List {
 	@Override
 	public Object[] toArray() {
 
-		var toArrayProcessor = new Processor() {
+		var toArrayProcessor = new Processor<E>() {
 			private Object[] elements = new Object[size];
 			private int index = 0;
 
@@ -392,7 +399,7 @@ public class LinkedListIndexedCollection implements List {
 			 * Adds <code>value</code> to backing array.
 			 */
 			@Override
-			public void process(Object value) {
+			public void process(E value) {
 				elements[index++] = value;
 			}
 		};
@@ -403,10 +410,10 @@ public class LinkedListIndexedCollection implements List {
 
 	@Override
 	public void clear() {
-		ListNode current = first;
+		ListNode<E> current = first;
 
 		while (current != null) {
-			ListNode next = current.next;
+			ListNode<E> next = current.next;
 			current.value = null;
 			current.previous = null;
 			current.next = null;
@@ -419,8 +426,8 @@ public class LinkedListIndexedCollection implements List {
 	}
 
 	@Override
-	public ElementsGetter createElementsGetter() {
-		return new LinkedListElementsGetter(this);
+	public ElementsGetter<E> createElementsGetter() {
+		return new LinkedListElementsGetter();
 	}
 
 	/**
@@ -430,17 +437,12 @@ public class LinkedListIndexedCollection implements List {
 	 * 
 	 * @author Luka Mesaric
 	 */
-	private static class LinkedListElementsGetter implements ElementsGetter {
-
-		/**
-		 * Collection to iterate over.
-		 */
-		private final LinkedListIndexedCollection data;
+	private class LinkedListElementsGetter implements ElementsGetter<E> {
 
 		/**
 		 * Node whose value will be returned next.
 		 */
-		private ListNode currentNode;
+		private ListNode<E> currentNode;
 
 		/**
 		 * Collection's modification count at the time of creating this
@@ -450,16 +452,10 @@ public class LinkedListIndexedCollection implements List {
 
 		/**
 		 * Default constructor.
-		 * 
-		 * @param data collection to iterate over
-		 * 
-		 * @throws NullPointerException if <code>data</code> is <code>null</code>
 		 */
-		public LinkedListElementsGetter(LinkedListIndexedCollection data) {
-			Util.validateNotNull(data, "data");
-			this.data = data;
-			this.currentNode = data.first;
-			this.savedModificationCount = data.modificationCount;
+		public LinkedListElementsGetter() {
+			this.currentNode = first;
+			this.savedModificationCount = modificationCount;
 		}
 
 		/**
@@ -469,7 +465,7 @@ public class LinkedListIndexedCollection implements List {
 		 */
 		@Override
 		public boolean hasNextElement() {
-			if (savedModificationCount != data.modificationCount) {
+			if (savedModificationCount != modificationCount) {
 				throw new ConcurrentModificationException("Collection was changed since this iterator was created.");
 			}
 			return currentNode != null;
@@ -482,11 +478,11 @@ public class LinkedListIndexedCollection implements List {
 		 * @throws ConcurrentModificationException {@inheritDoc}
 		 */
 		@Override
-		public Object getNextElement() {
+		public E getNextElement() {
 			if (!hasNextElement()) {
 				throw new NoSuchElementException("All elements of this collection have been used.");
 			}
-			Object value = currentNode.value;
+			E value = currentNode.value;
 			currentNode = currentNode.next;
 			return value;
 		}
@@ -505,7 +501,7 @@ public class LinkedListIndexedCollection implements List {
 		final int prime = 31;
 		int result = 1;
 
-		ListNode current = first;
+		ListNode<E> current = first;
 		while (current != null) {
 			result = prime * result + Objects.hash(current.value);
 			current = current.next;
@@ -521,7 +517,7 @@ public class LinkedListIndexedCollection implements List {
 		if (!(obj instanceof LinkedListIndexedCollection)) {
 			return false;
 		}
-		LinkedListIndexedCollection other = (LinkedListIndexedCollection) obj;
+		LinkedListIndexedCollection<?> other = (LinkedListIndexedCollection<?>) obj;
 		return (size == other.size) && Arrays.deepEquals(this.toArray(), other.toArray());
 	}
 

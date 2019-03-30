@@ -8,16 +8,18 @@ package hr.fer.zemris.java.custom.collections;
  * not allowed.
  * </p>
  * 
+ * @param <E> the type of elements stored in this stack
+ * 
  * @author Luka Mesaric
  * 
  * @see ArrayIndexedCollection
  */
-public class ObjectStack {
+public class ObjectStack<E> {
 
 	/**
 	 * Data structure used for storage and delegating method calls.
 	 */
-	private List list = new ArrayIndexedCollection();
+	private List<E> list = new ArrayIndexedCollection<>();
 
 	/**
 	 * Default constructor. Creates an empty stack.
@@ -56,7 +58,7 @@ public class ObjectStack {
 	 * 
 	 * @throws NullPointerException if <code>value</code> is <code>null</code>
 	 */
-	public void push(Object value) {
+	public void push(E value) {
 		list.add(value);
 	}
 
@@ -72,7 +74,7 @@ public class ObjectStack {
 	 * 
 	 * @throws EmptyStackException if stack was empty
 	 */
-	public Object pop() {
+	public E pop() {
 		return lastElement(true);
 	}
 
@@ -88,7 +90,7 @@ public class ObjectStack {
 	 * 
 	 * @throws EmptyStackException if stack was empty
 	 */
-	public Object peek() {
+	public E peek() {
 		return lastElement(false);
 	}
 
@@ -106,10 +108,10 @@ public class ObjectStack {
 	 * 
 	 * @throws EmptyStackException if stack was empty
 	 */
-	private Object lastElement(boolean shouldRemove) {
+	private E lastElement(boolean shouldRemove) {
 		try {
 			int index = list.size() - 1;
-			Object result = list.get(index);
+			E result = list.get(index);
 			if (shouldRemove) {
 				list.remove(index);
 			}

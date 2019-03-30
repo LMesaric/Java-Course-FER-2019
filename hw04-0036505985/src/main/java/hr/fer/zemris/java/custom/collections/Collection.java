@@ -1,11 +1,13 @@
 package hr.fer.zemris.java.custom.collections;
 
 /**
- * Interface represents any general collection of objects.
+ * Represents any general collection of objects.
+ * 
+ * @param <E> the type of elements stored in this collection
  * 
  * @author Luka Mesaric
  */
-public interface Collection {
+public interface Collection<E> {
 
 	/**
 	 * Checks if collection is empty.
@@ -29,7 +31,7 @@ public interface Collection {
 	 * 
 	 * @param value object to add
 	 */
-	void add(Object value);
+	void add(E value);
 
 	/**
 	 * Checks if given object is contained inside this collection.
@@ -70,7 +72,7 @@ public interface Collection {
 	 * 
 	 * @throws NullPointerException if <code>processor</code> is <code>null</code>
 	 */
-	default void forEach(Processor processor) {
+	default void forEach(Processor<? super E> processor) {
 		Util.validateNotNull(processor, "processor");
 		createElementsGetter().processRemaining(processor);
 	}
@@ -83,7 +85,7 @@ public interface Collection {
 	 * 
 	 * @throws NullPointerException if <code>other</code> is <code>null</code>
 	 */
-	default void addAll(Collection other) {
+	default void addAll(Collection<? extends E> other) {
 		Util.validateNotNull(other, "other");
 		other.forEach(this::add);
 	}
@@ -99,7 +101,7 @@ public interface Collection {
 	 * 
 	 * @return instance of <code>ElementsGetter</code> used for iteration
 	 */
-	ElementsGetter createElementsGetter();
+	ElementsGetter<E> createElementsGetter();
 
 	/**
 	 * All elements from <code>col</code> that <code>tester</code> accepts are added
@@ -110,14 +112,14 @@ public interface Collection {
 	 * 
 	 * @throws NullPointerException if any argument is <code>null</code>
 	 */
-	default void addAllSatisfying(Collection col, Tester tester) {
+	default void addAllSatisfying(Collection<? extends E> col, Tester<? super E> tester) {
 		Util.validateNotNull(col, "col");
 		Util.validateNotNull(tester, "tester");
 
-		ElementsGetter getter = col.createElementsGetter();
+		ElementsGetter<? extends E> getter = col.createElementsGetter();
 		getter.processRemaining(value -> {
 			if (tester.test(value)) {
-				this.add(value);
+				add(value);
 			}
 		});
 	}

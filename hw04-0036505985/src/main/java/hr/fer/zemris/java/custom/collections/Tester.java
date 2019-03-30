@@ -5,12 +5,14 @@ import java.util.function.Predicate;
 /**
  * Represents a boolean-valued function of one argument.
  * 
+ * @param <T> the type of the input to tester
+ * 
  * @author Luka Mesaric
  * 
  * @see Predicate
  */
 @FunctionalInterface
-public interface Tester {
+public interface Tester<T> {
 
 	/**
 	 * Evaluates this test on given argument.
@@ -19,6 +21,6 @@ public interface Tester {
 	 * @return <code>true</code> if the condition is met, <code>false</code>
 	 *         otherwise
 	 */
-	boolean test(Object obj);
+	boolean test(T obj);
 
 }

@@ -15,38 +15,38 @@ import org.junit.jupiter.api.Test;
  */
 class LinkedListIndexedCollectionTest {
 
-	private static LinkedListIndexedCollection empty;
-	private static LinkedListIndexedCollection one;
-	private static LinkedListIndexedCollection ten;
+	private static LinkedListIndexedCollection<String> empty;
+	private static LinkedListIndexedCollection<String> one;
+	private static LinkedListIndexedCollection<String> ten;
 
 	@BeforeEach
 	void setUp() {
-		empty = new LinkedListIndexedCollection();
+		empty = new LinkedListIndexedCollection<>();
 
-		one = new LinkedListIndexedCollection();
+		one = new LinkedListIndexedCollection<>();
 		one.add("hey");
 
-		ten = new LinkedListIndexedCollection();
+		ten = new LinkedListIndexedCollection<>();
 		ten.add("hey");
-		ten.add(12);
-		ten.add(-5);
-		ten.add(4.25);
+		ten.add("12");
+		ten.add("-5");
+		ten.add("4.25");
 		ten.add("hey");
-		ten.add(true);
-		ten.add(false);
-		ten.add(new LinkedListIndexedCollection());
-		ten.add(24L);
+		ten.add("true");
+		ten.add("false");
+		ten.add("");
+		ten.add("24L");
 		ten.add("text");
 	}
 
 	@Test
 	void testConstructors() {
-		assertThrows(NullPointerException.class, () -> new LinkedListIndexedCollection(null));
+		assertThrows(NullPointerException.class, () -> new LinkedListIndexedCollection<>(null));
 
-		LinkedListIndexedCollection emptyFirst = new LinkedListIndexedCollection();
+		LinkedListIndexedCollection<Object> emptyFirst = new LinkedListIndexedCollection<>();
 		assertEquals(0, emptyFirst.size());
 
-		LinkedListIndexedCollection emptySecond = new LinkedListIndexedCollection(empty);
+		LinkedListIndexedCollection<String> emptySecond = new LinkedListIndexedCollection<>(empty);
 		assertEquals(0, emptySecond.size());
 	}
 
@@ -69,7 +69,7 @@ class LinkedListIndexedCollectionTest {
 		assertThrows(NullPointerException.class, () -> empty.add(null));
 
 		for (int i = 1; i <= 1000; i++) {
-			empty.add(1);
+			empty.add("1");
 			assertEquals(i, empty.size());
 		}
 
@@ -125,7 +125,7 @@ class LinkedListIndexedCollectionTest {
 		assertThrows(IndexOutOfBoundsException.class, () -> one.get(-1));
 
 		assertEquals("hey", one.get(0));
-		assertEquals(24L, ten.get(8));
+		assertEquals("24L", ten.get(8));
 	}
 
 	@Test
@@ -133,7 +133,7 @@ class LinkedListIndexedCollectionTest {
 		assertEquals(-1, empty.indexOf(null));
 		assertEquals(-1, empty.indexOf("text"));
 
-		assertEquals(2, ten.indexOf(-5));
+		assertEquals(2, ten.indexOf("-5"));
 		assertEquals(9, ten.indexOf("text"));
 		assertEquals(0, ten.indexOf("hey"));
 	}
@@ -146,7 +146,6 @@ class LinkedListIndexedCollectionTest {
 		assertFalse(ten.contains("heyyyy")); // She wants you :)
 
 		assertTrue(ten.contains("hey")); // Just friends :(
-		assertTrue(ten.contains(new LinkedListIndexedCollection()));
 	}
 
 	@Test
@@ -192,7 +191,7 @@ class LinkedListIndexedCollectionTest {
 
 	@Test
 	void testForEach() {
-		var p = new Processor() {
+		var p = new Processor<>() {
 			private StringBuilder sb = new StringBuilder();
 
 			@Override
@@ -201,7 +200,7 @@ class LinkedListIndexedCollectionTest {
 			}
 		};
 
-		ArrayIndexedCollection three = new ArrayIndexedCollection();
+		LinkedListIndexedCollection<String> three = new LinkedListIndexedCollection<>();
 		three.add("1");
 		three.add("2");
 		three.add("3");
@@ -213,11 +212,12 @@ class LinkedListIndexedCollectionTest {
 
 	@Test
 	void testEquals() {
-		assertEquals(ten, new LinkedListIndexedCollection(ten));
+		assertEquals(ten, new LinkedListIndexedCollection<>(ten));
 	}
 
 	@Test
 	void testHashCode() {
-		assertEquals(ten.hashCode(), new LinkedListIndexedCollection(ten).hashCode());
+		assertEquals(ten.hashCode(), new LinkedListIndexedCollection<>(ten).hashCode());
 	}
+
 }

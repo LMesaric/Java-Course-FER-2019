@@ -13,12 +13,12 @@ import hr.fer.zemris.java.custom.collections.List;
 public class CollectionDemo8 {
 
 	public static void main(String[] args) {
-		List col1 = new ArrayIndexedCollection();
-		List col2 = new LinkedListIndexedCollection();
+		List<String> col1 = new ArrayIndexedCollection<>();
+		List<String> col2 = new LinkedListIndexedCollection<>();
 		col1.add("Ivana");
 		col2.add("Jasna");
-		Collection col3 = col1;
-		Collection col4 = col2;
+		Collection<String> col3 = col1;
+		Collection<String> col4 = col2;
 		col1.get(0);
 		col2.get(0);
 //		col3.get(0); // cannot be compiled
