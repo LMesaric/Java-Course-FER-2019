@@ -14,6 +14,9 @@ import java.util.Objects;
  */
 public class Dictionary<K, V> {
 
+	/**
+	 * Backing list used to store key-value pairs.
+	 */
 	private final List<Entry<K, V>> data;
 
 	/**
