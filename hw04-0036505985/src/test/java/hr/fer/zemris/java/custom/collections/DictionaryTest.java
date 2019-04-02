@@ -85,14 +85,23 @@ class DictionaryTest {
 	}
 
 	@Test
-	void testPutNull() {
+	void testPutNullKey() {
 		assertThrows(NullPointerException.class, () -> empty.put(null, 0));
 		assertThrows(NullPointerException.class, () -> one.put(null, 0));
 		assertThrows(NullPointerException.class, () -> five.put(null, 0));
 	}
 
 	@Test
-	void testPut() {
+	void testPutNullValue() {
+		assertNull(empty.get("1"));
+		empty.put("1", null);
+		assertNull(empty.get("1"));
+		empty.put("1", 1);
+		assertEquals(1, empty.get("1"));
+	}
+
+	@Test
+	void testPutSame() {
 		for (int i = 2; i <= 1000; i++) {
 			one.put("1", one.get("1") + 1);
 			assertEquals(1, one.size());
@@ -102,6 +111,15 @@ class DictionaryTest {
 		assertNull(five.get("10"));
 		five.put("10", 10);
 		assertEquals(10, five.get("10"));
+	}
+	
+	@Test
+	void testPutDifferend() {
+		for (int i = 1; i <= 5000; i++) {
+			empty.put(String.valueOf(i), i);
+			assertEquals(i, empty.size());
+			assertEquals(i, empty.get(String.valueOf(i)));
+		}
 	}
 
 }

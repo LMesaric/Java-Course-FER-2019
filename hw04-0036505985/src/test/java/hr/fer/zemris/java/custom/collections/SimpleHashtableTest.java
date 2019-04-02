@@ -34,6 +34,19 @@ class SimpleHashtableTest {
 	}
 
 	@Test
+	void testConstructors() {
+		assertThrows(IllegalArgumentException.class, () -> new SimpleHashtable<>(0));
+
+		assertEquals(0, empty.size());
+
+		SimpleHashtable<String, Integer> emptyFirst = new SimpleHashtable<>(10);
+		assertEquals(0, emptyFirst.size());
+
+		SimpleHashtable<String, Integer> emptySecond = new SimpleHashtable<>(150);
+		assertEquals(0, emptySecond.size());
+	}
+
+	@Test
 	void testIsEmpty() {
 		assertTrue(empty.isEmpty());
 		assertFalse(one.isEmpty());
@@ -85,10 +98,22 @@ class SimpleHashtableTest {
 	}
 
 	@Test
-	void testPutNull() {
+	void testPutNullKey() {
 		assertThrows(NullPointerException.class, () -> empty.put(null, 0));
 		assertThrows(NullPointerException.class, () -> one.put(null, 0));
 		assertThrows(NullPointerException.class, () -> five.put(null, 0));
+	}
+
+	@Test
+	void testPutNullValue() {
+		assertNull(empty.get("1"));
+		assertFalse(empty.containsValue(null));
+		empty.put("1", null);
+		assertNull(empty.get("1"));
+		assertTrue(empty.containsValue(null));
+		empty.put("1", 1);
+		assertEquals(1, empty.get("1"));
+		assertFalse(empty.containsValue(null));
 	}
 
 	@Test
@@ -102,6 +127,20 @@ class SimpleHashtableTest {
 		assertNull(five.get("10"));
 		five.put("10", 10);
 		assertEquals(10, five.get("10"));
+	}
+
+	@Test
+	void testContainsValue() {
+		for (int i = 1; i <= 10000; i++) {
+			empty.put(String.valueOf(i), i);
+			assertEquals(i, empty.size());
+			assertEquals(i, empty.get(String.valueOf(i)));
+		}
+
+		for (int i = 1; i <= 10000; i++) {
+			assertTrue(empty.containsKey(String.valueOf(i)));
+			assertTrue(empty.containsValue(i));
+		}
 	}
 
 }
