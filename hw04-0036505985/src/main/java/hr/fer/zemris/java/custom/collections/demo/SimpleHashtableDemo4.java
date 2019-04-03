@@ -22,7 +22,7 @@ public class SimpleHashtableDemo4 {
 		while (iter.hasNext()) {
 			SimpleHashtable.TableEntry<String, Integer> pair = iter.next();
 			if (pair.getKey().equals("Ivana")) {
-				iter.remove(); // sam iterator kontrolirano uklanja trenutni element
+				iter.remove(); // iterator removes current element in a controlled manner
 			}
 		}
 

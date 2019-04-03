@@ -84,6 +84,10 @@ class SimpleHashtableTest {
 
 	@Test
 	void testGet() {
+		assertNull(empty.get(null));
+		assertNull(one.get(null));
+		assertNull(five.get(null));
+
 		assertNull(empty.get(1));
 		assertNull(empty.get("1"));
 
@@ -130,7 +134,14 @@ class SimpleHashtableTest {
 	}
 
 	@Test
-	void testContainsValue() {
+	void testContainsNullKey() {
+		assertFalse(empty.containsKey(null));
+		assertFalse(one.containsKey(null));
+		assertFalse(five.containsKey(null));
+	}
+
+	@Test
+	void testContainsKeyAndValue() {
 		for (int i = 1; i <= 10000; i++) {
 			empty.put(String.valueOf(i), i);
 			assertEquals(i, empty.size());
@@ -141,6 +152,26 @@ class SimpleHashtableTest {
 			assertTrue(empty.containsKey(String.valueOf(i)));
 			assertTrue(empty.containsValue(i));
 		}
+	}
+
+	@Test
+	void testRemove() {
+		assertEquals(0, empty.size());
+		empty.remove(null);
+		empty.remove("1");
+		assertEquals(0, empty.size());
+
+		assertEquals(1, one.size());
+		one.remove(null);
+		assertEquals(1, one.size());
+		one.remove("1");
+		assertEquals(0, one.size());
+	}
+	
+	@Test
+	void testToString() {
+		assertEquals("[]", empty.toString());
+		assertEquals("[1=1]", one.toString());
 	}
 
 }

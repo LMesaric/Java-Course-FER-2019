@@ -220,7 +220,7 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
 
 	/**
 	 * Checks if given <code>key</code> is contained inside this hash table.
-	 * <code>null</code> is never contained.
+	 * <code>null</code> is never contained. Runs in constant time.
 	 * 
 	 * @param key key to look for, can be <code>null</code>
 	 * @return <code>true</code> if this hash table contains an entry for
@@ -231,7 +231,8 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
 	}
 
 	/**
-	 * Checks if given <code>value</code> is contained inside this hash table.
+	 * Checks if given <code>value</code> is contained inside this hash table. Runs
+	 * in linear time.
 	 * 
 	 * @param value value to look for, can be <code>null</code>
 	 * @return <code>true</code> if this hash table maps any key to
@@ -340,13 +341,8 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
 	 */
 	private void addEntryToList(TableEntry<K, V> entry, int index) {
 		Util.validateNotNull(entry, "entry");
-		if (table[index] == null) {
-			table[index] = entry;
-			entry.next = null;
-		} else {
-			entry.next = table[index];
-			table[index] = entry;
-		}
+		entry.next = table[index]; // can be null
+		table[index] = entry;
 	}
 
 	/**
@@ -522,6 +518,7 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
 		@Override
 		public TableEntry<K, V> next() {
 			if (!hasNext()) {
+				// hasNext already checked for concurrent modifications
 				throw new NoSuchElementException("All elements of this collection have been used.");
 			}
 			currentEntry = nextEntry;
