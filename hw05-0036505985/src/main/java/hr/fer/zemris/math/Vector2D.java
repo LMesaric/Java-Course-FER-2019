@@ -2,7 +2,7 @@ package hr.fer.zemris.math;
 
 import java.util.Objects;
 
-import hr.fer.zemris.util.Util;
+import hr.fer.zemris.java.custom.collections.Util;
 
 /**
  * Models a 2D vector in Cartesian coordinate system.
@@ -188,8 +188,7 @@ public class Vector2D {
 
 		}
 		// this is needed to compare non-finite values
-		return doubleEqualsEpsilon(x, other.x, TOLERANCE) 
-				&& doubleEqualsEpsilon(y, other.y, TOLERANCE);
+		return doubleEqualsEpsilon(x, other.x, TOLERANCE) && doubleEqualsEpsilon(y, other.y, TOLERANCE);
 	}
 
 }
