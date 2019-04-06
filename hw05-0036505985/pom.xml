@@ -37,6 +37,11 @@
 			<version>${junit.jupiter.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>lsystems</groupId>
+			<artifactId>lsystems</artifactId>
+			<version>1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
