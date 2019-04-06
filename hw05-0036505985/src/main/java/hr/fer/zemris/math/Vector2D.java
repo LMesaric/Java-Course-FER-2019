@@ -2,7 +2,7 @@ package hr.fer.zemris.math;
 
 import java.util.Objects;
 
-import hr.fer.zemris.java.custom.collections.Util;
+import hr.fer.zemris.util.Util;
 
 /**
  * Models a 2D vector in Cartesian coordinate system.
