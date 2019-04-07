@@ -17,6 +17,6 @@ public interface IFilter {
 	 * 
 	 * @throws NullPointerException if <code>record</code> is <code>null</code>.
 	 */
-	public boolean accepts(StudentRecord record);
+	boolean accepts(StudentRecord record);
 
 }
