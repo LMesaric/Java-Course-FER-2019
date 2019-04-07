@@ -25,7 +25,7 @@ public class Vector2D {
 	 * Tolerance for determining equality of two double values, and consequently two
 	 * instances of <code>Vector2D</code>. Value is {@value}.
 	 */
-	public static final double TOLERANCE = 1E-7;
+	public static final double TOLERANCE = 1E-6;
 
 	/**
 	 * Default constructor.
@@ -69,7 +69,7 @@ public class Vector2D {
 	 * Returns a new vector which represents the current vector translated by
 	 * <code>offset</code>. Original vector is not modified.
 	 * 
-	 * @param offset
+	 * @param offset offset
 	 * @return translated vector
 	 * 
 	 * @throws NullPointerException if <code>offset</code> is <code>null</code>
@@ -82,7 +82,7 @@ public class Vector2D {
 	/**
 	 * Rotates this vector by <code>angle</code>.
 	 * 
-	 * @param angle, in radians
+	 * @param angle angle, in radians
 	 */
 	public void rotate(double angle) {
 		replace(rotated(angle));
@@ -92,7 +92,7 @@ public class Vector2D {
 	 * Returns a new vector which represents the current vector rotated by
 	 * <code>angle</code>. Original vector is not modified.
 	 * 
-	 * @param angle, in radians
+	 * @param angle angle, in radians
 	 * @return rotated vector
 	 */
 	public Vector2D rotated(double angle) {
