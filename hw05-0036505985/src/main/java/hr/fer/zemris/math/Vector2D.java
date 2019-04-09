@@ -183,12 +183,9 @@ public class Vector2D {
 			return false;
 		}
 		Vector2D other = (Vector2D) obj;
-
-		if (Double.compare(x, other.x) == 0) {
-
-		}
 		// this is needed to compare non-finite values
-		return doubleEqualsEpsilon(x, other.x, TOLERANCE) && doubleEqualsEpsilon(y, other.y, TOLERANCE);
+		return doubleEqualsEpsilon(x, other.x, TOLERANCE)
+				&& doubleEqualsEpsilon(y, other.y, TOLERANCE);
 	}
 
 }
