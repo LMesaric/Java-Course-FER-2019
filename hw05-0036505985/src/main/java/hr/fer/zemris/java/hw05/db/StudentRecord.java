@@ -53,7 +53,8 @@ public class StudentRecord {
 	 * @throws IllegalArgumentException if <code>finalGrade</code> is not from
 	 *                                  interval <code>[1, 5]</code>.
 	 */
-	public StudentRecord(String jmbag, String lastName, String firstName, int finalGrade) {
+	public StudentRecord(String jmbag, String lastName,
+			String firstName, int finalGrade) {
 		this.jmbag = Util.validateNotNull(jmbag, "jmbag");
 		this.lastName = Util.validateNotNull(lastName, "lastName");
 		this.firstName = Util.validateNotNull(firstName, "firstName");
@@ -114,8 +115,8 @@ public class StudentRecord {
 
 	@Override
 	public String toString() {
-		return "StudentRecord [jmbag=" + jmbag + ", lastName=" + lastName + ", firstName=" + firstName + ", finalGrade="
-				+ finalGrade + "]";
+		return "StudentRecord [jmbag=" + jmbag + ", lastName=" + lastName
+				+ ", firstName=" + firstName + ", finalGrade=" + finalGrade + "]";
 	}
 
 	@Override
