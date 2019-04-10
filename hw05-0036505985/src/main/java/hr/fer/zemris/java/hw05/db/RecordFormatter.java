@@ -18,7 +18,8 @@ public class RecordFormatter {
 
 	/**
 	 * Produces a list of strings, with each element representing one line of
-	 * formatted output.
+	 * formatted output.<br>
+	 * If supplied list is empty, an empty list is returned.
 	 * 
 	 * @param records records to format
 	 * @return formatted records that can be used to print to console or file etc.

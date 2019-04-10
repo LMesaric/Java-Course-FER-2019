@@ -5,7 +5,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -130,21 +131,33 @@ public class StudentDB {
 			return false;
 		}
 
-		List<StudentRecord> queriedRecords;
-		if (parser.isDirectQuery()) {
-			System.out.println("Using index for record retrieval.");
-			StudentRecord r = db.forJMBAG(parser.getQueriedJMBAG());
-			queriedRecords = new ArrayList<>(1);
-			if (r != null) {
-				queriedRecords.add(r);
-			}
-		} else {
-			queriedRecords = db.filter(new QueryFilter(parser.getQuery()));
-		}
+		List<StudentRecord> queriedRecords = retrieveRecords(db, parser);
 
 		RecordFormatter.format(queriedRecords).forEach(System.out::println);
 		System.out.format("Records selected: %d%n%n", queriedRecords.size());
 		return false;
+	}
+
+	/**
+	 * Retrieves student records from <code>db</code>.<br>
+	 * Writes a message on standard output if <i>index</i> was used to retrieve
+	 * records.
+	 * 
+	 * @param db     instance of database used to get queried student records
+	 * @param parser parser that contains given query
+	 * @return list of retrieved records
+	 */
+	private static List<StudentRecord> retrieveRecords(StudentDatabase db, QueryParser parser) {
+		if (parser.isDirectQuery()) {
+			System.out.println("Using index for record retrieval.");
+			StudentRecord r = db.forJMBAG(parser.getQueriedJMBAG());
+			if (r == null) {
+				return Collections.emptyList();
+			}
+			return Arrays.asList(r);
+		} else {
+			return db.filter(new QueryFilter(parser.getQuery()));
+		}
 	}
 
 }
