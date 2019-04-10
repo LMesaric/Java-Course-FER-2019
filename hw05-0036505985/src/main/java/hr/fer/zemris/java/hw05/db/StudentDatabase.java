@@ -49,11 +49,10 @@ public class StudentDatabase {
 			if (line == null || (line = line.strip()).isEmpty()) {
 				continue;
 			}
-
 			StudentRecord record = parseRecordFromLine(line);
-
 			if (index.put(record.getJmbag(), record) != null) {
-				throw new IllegalArgumentException("Student appeared more than once: " + line);
+				throw new IllegalArgumentException(
+						"Student appeared more than once: " + line);
 			}
 			studentRecords.add(record);
 		}
@@ -72,13 +71,15 @@ public class StudentDatabase {
 	private StudentRecord parseRecordFromLine(String line) {
 		String[] parts = line.split("\\t");
 		if (parts.length != 4) {
-			throw new IllegalArgumentException("Database entry must have exactly 4 items: " + line);
+			throw new IllegalArgumentException(
+					"Database entry must have exactly 4 items: " + line);
 		}
 		try {
 			int grade = Integer.parseInt(parts[3]);
 			return new StudentRecord(parts[0], parts[1], parts[2], grade);
 		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("Grade must be an integer: " + line, e);
+			throw new IllegalArgumentException(
+					"Grade must be an integer: " + line, e);
 		}
 	}
 

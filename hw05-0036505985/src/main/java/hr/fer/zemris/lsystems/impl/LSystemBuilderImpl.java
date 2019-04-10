@@ -147,7 +147,8 @@ public class LSystemBuilderImpl implements LSystemBuilder {
 	@Override
 	public LSystemBuilder setUnitLengthDegreeScaler(double unitLengthDegreeScaler) {
 		if (unitLengthDegreeScaler <= 0 || !Double.isFinite(unitLengthDegreeScaler)) {
-			throw new IllegalArgumentException("'unitLengthDegreeScaler' must be a finite positive value.");
+			throw new IllegalArgumentException(
+					"'unitLengthDegreeScaler' must be a finite positive value.");
 		}
 		this.unitLengthDegreeScaler = unitLengthDegreeScaler;
 		return this;
@@ -233,7 +234,8 @@ public class LSystemBuilderImpl implements LSystemBuilder {
 	private void parseDirectiveFromLine(String line) {
 		String[] parts = line.split("\\s+", 2);
 		if (parts.length != 2) {
-			throw new IllegalArgumentException("Directive must have some arguments: " + line);
+			throw new IllegalArgumentException(
+					"Directive must have some arguments: " + line);
 		}
 		String arguments = parts[1];
 
@@ -268,7 +270,8 @@ public class LSystemBuilderImpl implements LSystemBuilder {
 			// second part usually contains has some blanks that must not be split
 			String[] subpartsCommand = arguments.split("\\s+", 2);
 			if (subpartsCommand.length != 2 || subpartsCommand[0].length() != 1) {
-				throw new IllegalArgumentException("Command must have a symbol and command body: " + arguments);
+				throw new IllegalArgumentException(
+						"Command must have a symbol and command body: " + arguments);
 			}
 			registerCommand(subpartsCommand[0].charAt(0), subpartsCommand[1]);
 			break;
@@ -277,7 +280,8 @@ public class LSystemBuilderImpl implements LSystemBuilder {
 			String[] subpartsProduction = splitExactNumberOfArgs(arguments, 2);
 			if (subpartsProduction[0].length() != 1) {
 				throw new IllegalArgumentException(
-						"Production must have a symbol as first argument: " + subpartsProduction[0]);
+						"Production must have a symbol as first argument: "
+								+ subpartsProduction[0]);
 			}
 			registerProduction(subpartsProduction[0].charAt(0), subpartsProduction[1]);
 			break;
@@ -325,7 +329,8 @@ public class LSystemBuilderImpl implements LSystemBuilder {
 		case "pop":
 			return new PopCommand();
 		default:
-			throw new IllegalArgumentException(commandName + " is not a valid command name for use without arguments.");
+			throw new IllegalArgumentException(
+					commandName + " is not a valid command name for use without arguments.");
 		}
 	}
 
@@ -351,7 +356,8 @@ public class LSystemBuilderImpl implements LSystemBuilder {
 		case "color":
 			return new ColorCommand(new Color(parseHexIntegerValue(argument)));
 		default:
-			throw new IllegalArgumentException(commandName + " is not a valid command name for use with one argument.");
+			throw new IllegalArgumentException(
+					commandName + " is not a valid command name for use with one argument.");
 		}
 
 	}
@@ -372,7 +378,8 @@ public class LSystemBuilderImpl implements LSystemBuilder {
 		} else if (subpartsScaler.length == 2) {
 			return parseDoubleValue(subpartsScaler[0]) / parseDoubleValue(subpartsScaler[1]);
 		} else {
-			throw new IllegalArgumentException("Invalid argument for unitLengthDegreeScaler: " + arg);
+			throw new IllegalArgumentException(
+					"Invalid argument for unitLengthDegreeScaler: " + arg);
 		}
 	}
 
@@ -388,7 +395,8 @@ public class LSystemBuilderImpl implements LSystemBuilder {
 		try {
 			return Double.parseDouble(number.strip());
 		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("Expected a number, but received: " + number, e);
+			throw new IllegalArgumentException(
+					"Expected a number, but received: " + number, e);
 		}
 	}
 
@@ -405,7 +413,8 @@ public class LSystemBuilderImpl implements LSystemBuilder {
 		try {
 			return Integer.parseInt(number.strip(), 16);
 		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("Expected a hex integer, but received: " + number, e);
+			throw new IllegalArgumentException(
+					"Expected a hex integer, but received: " + number, e);
 		}
 	}
 
@@ -423,7 +432,8 @@ public class LSystemBuilderImpl implements LSystemBuilder {
 	private String[] splitExactNumberOfArgs(String args, int number) {
 		String[] argsArray = args.strip().split("\\s+");
 		if (argsArray.length != number) {
-			throw new IllegalArgumentException("Expected exactly " + number + " arguments, but received: " + args);
+			throw new IllegalArgumentException(
+					"Expected exactly " + number + " arguments, but received: " + args);
 		}
 		return argsArray;
 	}
@@ -495,7 +505,8 @@ public class LSystemBuilderImpl implements LSystemBuilder {
 
 			Vector2D direction = new Vector2D(1, 0).rotated(Math.toRadians(angle));
 			double effectiveLength = unitLength * Math.pow(unitLengthDegreeScaler, level);
-			TurtleState state = new TurtleState(origin.copy(), direction, DEFAULT_COLOR, effectiveLength);
+			TurtleState state = new TurtleState(
+					origin.copy(), direction, DEFAULT_COLOR, effectiveLength);
 			context.pushState(state);
 
 			for (char c : sequence.toCharArray()) {
