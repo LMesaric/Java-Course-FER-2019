@@ -1,4 +1,4 @@
-package hr.fer.zemris.java.hw05.db;
+package hr.fer.zemris.java.hw05.db.demo;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +10,12 @@ import java.util.List;
 import java.util.Scanner;
 
 import hr.fer.zemris.java.custom.collections.Util;
+import hr.fer.zemris.java.hw05.db.ParserException;
+import hr.fer.zemris.java.hw05.db.QueryFilter;
+import hr.fer.zemris.java.hw05.db.QueryParser;
+import hr.fer.zemris.java.hw05.db.RecordFormatter;
+import hr.fer.zemris.java.hw05.db.StudentDatabase;
+import hr.fer.zemris.java.hw05.db.StudentRecord;
 
 /**
  * Console-like application for querying a student database.<br>
