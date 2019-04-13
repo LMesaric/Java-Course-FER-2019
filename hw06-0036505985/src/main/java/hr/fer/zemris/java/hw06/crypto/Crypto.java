@@ -57,7 +57,11 @@ public class Crypto {
 				System.out.println("Unknown command: " + args[0]);
 				return;
 			}
-		} catch (IOException | NoSuchAlgorithmException | InvalidKeyException
+
+		} catch (IOException e) {
+			System.out.println(
+					"Error while reading or writing to file: " + e.getMessage());
+		} catch (NoSuchAlgorithmException | InvalidKeyException
 				| NoSuchPaddingException | InvalidAlgorithmParameterException
 				| IllegalBlockSizeException | BadPaddingException e) {
 			System.out.println(e.getMessage());
@@ -112,17 +116,22 @@ public class Crypto {
 		}
 
 		System.out.format("Please provide password as hex-encoded text "
-				+ "(16 bytes, i.e. 32 hex-digits):%n>");
-		String password = sc.nextLine();
+				+ "(16 bytes, i.e. 32 hex-digits):%n> ");
+		String password = sc.nextLine().strip();
 
 		System.out.format("Please provide initialization vector as "
-				+ "hex-encoded text (32 hex-digits):%n>");
-		String initializationVector = sc.nextLine();
+				+ "hex-encoded text (32 hex-digits):%n> ");
+		String initializationVector = sc.nextLine().strip();
 
 		Path source = Paths.get(args[1]);
 		Path destination = Paths.get(args[2]);
 
-		encryption(source, destination, password, initializationVector, encrypt);
+		try {
+			encryption(source, destination, password, initializationVector, encrypt);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+			return;
+		}
 
 		System.out.format("%s completed. Generated file %s based on file %s.%n",
 				encrypt ? "Encryption" : "Decryption",
@@ -149,7 +158,7 @@ public class Crypto {
 		ExceptionUtil.validateNotNull(sc, "sc");
 
 		System.out.format("Please provide expected sha-256 digest for %s:%n> ", path);
-		String expectedDigest = sc.nextLine();
+		String expectedDigest = sc.nextLine().strip();
 		String calculatedDigest = calculateSha256(path);
 
 		if (expectedDigest.equals(calculatedDigest)) {
@@ -157,9 +166,8 @@ public class Crypto {
 					"Digesting completed. Digest of %s matches expected digest.%n",
 					path.toString());
 		} else {
-			System.out.format(
-					"Digesting completed. Digest of %s does not match the expected digest."
-							+ " Digest was: %s%n",
+			System.out.format("Digesting completed. Digest of %s does not match "
+					+ "the expected digest. Digest was: %s%n",
 					path.toString(), calculatedDigest);
 		}
 	}
@@ -208,6 +216,12 @@ public class Crypto {
 	 * 
 	 * @throws NullPointerException               if any argument is
 	 *                                            <code>null</code>
+	 * @throws IllegalArgumentException           if number of characters in
+	 *                                            <code>keyText</code> or
+	 *                                            <code>ivText</code> is not even,
+	 *                                            or any character does not
+	 *                                            represent a valid hexadecimal
+	 *                                            digit
 	 * @throws IOException                        if <code>source</code> does not
 	 *                                            exist, or <code>destination</code>
 	 *                                            does not represent a valid path on
