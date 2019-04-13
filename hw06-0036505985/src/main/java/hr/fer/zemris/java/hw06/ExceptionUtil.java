@@ -20,7 +20,8 @@ public final class ExceptionUtil {
 	 * @throws NullPointerException if <code>object</code> is <code>null</code>
 	 */
 	public static <T> T validateNotNull(T object, String name) {
-		return Objects.requireNonNull(object, "Argument '" + name + "' must not be null.");
+		return Objects.requireNonNull(object,
+				"Argument '" + name + "' must not be null.");
 	}
 
 }

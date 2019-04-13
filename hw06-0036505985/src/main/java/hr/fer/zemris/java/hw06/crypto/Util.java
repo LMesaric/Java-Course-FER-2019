@@ -31,7 +31,8 @@ public class Util {
 	 * For zero-length string, a zero-length byte array will be returned.
 	 *
 	 * @param keyText hex-encoded string
-	 * @return array of bytes represented by <code>keyText</code>
+	 * @return array of bytes represented by <code>keyText</code>, never
+	 *         <code>null</code>
 	 * 
 	 * @throws IllegalArgumentException if number of characters in
 	 *                                  <code>keyText</code> is not even, or any
@@ -42,7 +43,8 @@ public class Util {
 	public static byte[] hextobyte(String keyText) {
 		ExceptionUtil.validateNotNull(keyText, "keyText");
 		if (keyText.length() % 2 != 0) {
-			throw new IllegalArgumentException("Input must have an even number of characters: " + keyText);
+			throw new IllegalArgumentException(
+					"Input must have an even number of characters: " + keyText);
 		}
 
 		byte[] bytes = new byte[keyText.length() / 2];
@@ -53,7 +55,8 @@ public class Util {
 			int second = DIGITS.indexOf(digits[d++]);
 
 			if (first < 0 || second < 0) {
-				throw new IllegalArgumentException("Illegal character: '" + digits[first < 0 ? d - 2 : d - 1] + "'.");
+				throw new IllegalArgumentException("Illegal character: '"
+						+ digits[first < 0 ? d - 2 : d - 1] + "'.");
 			}
 
 			bytes[b] = (byte) (first * HEX_RADIX + second);
@@ -68,7 +71,7 @@ public class Util {
 	 * characters will be used.<br>
 	 * For zero-length array, an empty string will be returned.
 	 *
-	 * @param byteArray array of bytes to convert
+	 * @param byteArray array of bytes to convert, never <code>null</code>
 	 * @return hex-encoding of <code>byteArray</code>
 	 * 
 	 * @throws NullPointerException if <code>byteArray</code> is <code>null</code>
