@@ -116,9 +116,7 @@ public class HexdumpShellCommand implements ShellCommand {
 			sbHex.append(r ? "  " : String.format("%02X", b));
 			sbChar.append(r ? ' ' : ((b < 32 || b >= 127) ? '.' : (char) b));
 		}
-		sbHex.append(" | ").append(sbChar);
-
-		return sbHex.toString();
+		return sbHex.append(" | ").append(sbChar).toString();
 	}
 
 	@Override
