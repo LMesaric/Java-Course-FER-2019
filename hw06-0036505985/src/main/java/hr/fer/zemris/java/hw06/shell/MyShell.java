@@ -165,6 +165,8 @@ public class MyShell implements Environment {
 	 */
 	@Override
 	public void write(String text) throws ShellIOException {
+		// NPE is deliberately thrown (unmasked) to detect possible bugs in the code.
+		// The code that was written should never actually cause an NPE.
 		ExceptionUtil.validateNotNull(text, "text");
 		System.out.print(text);
 	}
@@ -177,6 +179,8 @@ public class MyShell implements Environment {
 	 */
 	@Override
 	public void writeln(String text) throws ShellIOException {
+		// NPE is deliberately thrown (unmasked) to detect possible bugs in the code.
+		// The code that was written should never actually cause an NPE.
 		ExceptionUtil.validateNotNull(text, "text");
 		// %n outputs a platform-specific line separator.
 		write(String.format("%s%n", text));
