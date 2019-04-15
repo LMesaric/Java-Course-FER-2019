@@ -15,21 +15,20 @@ public interface Environment {
 	 * by <code>MORELINES</code> symbol.<br>
 	 * Returned input may be empty or blank, but it will never be <code>null</code>.
 	 * 
-	 * @return user input as a single string, never <code>null</code>
-	 * 
+	 * @return                  user input as a single string, never
+	 *                          <code>null</code>
 	 * @throws ShellIOException if reading fails
-	 * @see #getMorelinesSymbol()
+	 * @see                     #getMorelinesSymbol()
 	 */
 	String readLine() throws ShellIOException;
 
 	/**
 	 * Writes <code>text</code> to user (e.g. in console).
 	 * 
-	 * @param text text to write
-	 * 
+	 * @param  text                 text to write
 	 * @throws ShellIOException     if writing fails
 	 * @throws NullPointerException if <code>text</code> is <code>null</code>
-	 * @see #writeln(String)
+	 * @see                         #writeln(String)
 	 */
 	void write(String text) throws ShellIOException;
 
@@ -37,11 +36,10 @@ public interface Environment {
 	 * Writes <code>text</code> to user (e.g. in console), and then terminates the
 	 * line.
 	 * 
-	 * @param text
-	 * 
+	 * @param  text
 	 * @throws ShellIOException     if writing fails
 	 * @throws NullPointerException if <code>text</code> is <code>null</code>
-	 * @see #write(String)
+	 * @see                         #write(String)
 	 */
 	void writeln(String text) throws ShellIOException;
 
@@ -63,8 +61,7 @@ public interface Environment {
 	/**
 	 * Setter for <code>multilineSymbol</code>.
 	 *
-	 * @param symbol the <code>multilineSymbol</code> to set
-	 * 
+	 * @param  symbol               the <code>multilineSymbol</code> to set
 	 * @throws NullPointerException if <code>symbol</code> is <code>null</code>
 	 */
 	void setMultilineSymbol(Character symbol);
@@ -79,8 +76,7 @@ public interface Environment {
 	/**
 	 * Setter for <code>promptSymbol</code>.
 	 *
-	 * @param symbol the <code>promptSymbol</code> to set
-	 * 
+	 * @param  symbol               the <code>promptSymbol</code> to set
 	 * @throws NullPointerException if <code>symbol</code> is <code>null</code>
 	 */
 	void setPromptSymbol(Character symbol);
@@ -95,8 +91,7 @@ public interface Environment {
 	/**
 	 * Setter for <code>morelinesSymbol</code>.
 	 *
-	 * @param symbol the <code>morelinesSymbol</code> to set
-	 * 
+	 * @param  symbol               the <code>morelinesSymbol</code> to set
 	 * @throws NullPointerException if <code>symbol</code> is <code>null</code>
 	 */
 	void setMorelinesSymbol(Character symbol);

@@ -27,6 +27,17 @@ import hr.fer.zemris.java.hw06.shell.commands.TreeShellCommand;
 public class MyShell implements Environment {
 
 	/**
+	 * Program entry point
+	 * 
+	 * @param args ignored
+	 */
+	public static void main(String[] args) {
+		try (Scanner sc = new Scanner(System.in)) {
+			new MyShell(sc).run();
+		}
+	}
+
+	/**
 	 * Prompt symbol for first line of input.
 	 */
 	private char promptSymbol = '>';
@@ -52,21 +63,9 @@ public class MyShell implements Environment {
 	private final SortedMap<String, ShellCommand> commands = new TreeMap<>();
 
 	/**
-	 * Program entry point
-	 * 
-	 * @param args ignored
-	 */
-	public static void main(String[] args) {
-		try (Scanner sc = new Scanner(System.in)) {
-			new MyShell(sc).run();
-		}
-	}
-
-	/**
 	 * Default constructor.
 	 * 
-	 * @param sc scanner used to read user input
-	 * 
+	 * @param  sc                   scanner used to read user input
 	 * @throws NullPointerException if <code>sc</code> is <code>null</code>
 	 */
 	public MyShell(Scanner sc) {
@@ -103,7 +102,9 @@ public class MyShell implements Environment {
 				String arguments = split.length < 2 ? "" : split[1];
 				ShellCommand command = commands.get(commandName);
 				if (command == null) {
-					writeln("Unknown command: " + commandName);
+					if (!commandName.isEmpty()) {
+						writeln("Unknown command: " + commandName);
+					}
 					continue;
 				}
 				shellStatus = command.executeCommand(this, arguments);
@@ -120,8 +121,7 @@ public class MyShell implements Environment {
 	/**
 	 * Helper method for adding multiple shell commands to the map of all commands.
 	 * 
-	 * @param shellCommands shell commands to register
-	 * 
+	 * @param  shellCommands        shell commands to register
 	 * @throws NullPointerException if <code>shellCommands</code> is
 	 *                              <code>null</code>, or any of its elements is
 	 *                              <code>null</code>
@@ -188,9 +188,7 @@ public class MyShell implements Environment {
 	}
 
 	@Override
-	public Character getMultilineSymbol() {
-		return multilineSymbol;
-	}
+	public Character getMultilineSymbol() { return multilineSymbol; }
 
 	/**
 	 * {@inheritDoc}
@@ -204,9 +202,7 @@ public class MyShell implements Environment {
 	}
 
 	@Override
-	public Character getPromptSymbol() {
-		return promptSymbol;
-	}
+	public Character getPromptSymbol() { return promptSymbol; }
 
 	/**
 	 * {@inheritDoc}
@@ -220,9 +216,7 @@ public class MyShell implements Environment {
 	}
 
 	@Override
-	public Character getMorelinesSymbol() {
-		return morelinesSymbol;
-	}
+	public Character getMorelinesSymbol() { return morelinesSymbol; }
 
 	/**
 	 * {@inheritDoc}

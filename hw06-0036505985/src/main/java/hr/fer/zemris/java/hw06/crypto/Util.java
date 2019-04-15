@@ -30,10 +30,10 @@ public class Util {
 	 * both upper case and lower case letters.<br>
 	 * For zero-length string, a zero-length byte array will be returned.
 	 *
-	 * @param keyText hex-encoded string
-	 * @return array of bytes represented by <code>keyText</code>, never
-	 *         <code>null</code>
-	 * 
+	 * @param  keyText                  hex-encoded string
+	 * @return                          array of bytes represented by
+	 *                                  <code>keyText</code>, never
+	 *                                  <code>null</code>
 	 * @throws IllegalArgumentException if number of characters in
 	 *                                  <code>keyText</code> is not even, or any
 	 *                                  character does not represent a valid
@@ -71,9 +71,9 @@ public class Util {
 	 * characters will be used.<br>
 	 * For zero-length array, an empty string will be returned.
 	 *
-	 * @param byteArray array of bytes to convert, never <code>null</code>
-	 * @return hex-encoding of <code>byteArray</code>
-	 * 
+	 * @param  byteArray            array of bytes to convert, never
+	 *                              <code>null</code>
+	 * @return                      hex-encoding of <code>byteArray</code>
 	 * @throws NullPointerException if <code>byteArray</code> is <code>null</code>
 	 */
 	public static String bytetohex(byte[] byteArray) {

@@ -73,13 +73,12 @@ public class Crypto {
 	 * using provided scanner. Encrypts or decrypts wanted file using key and vector
 	 * supplied by user.
 	 * 
-	 * @param args array of arguments - keyword (encrypt/decrypt), path to source
-	 *             file, and path to destination file
-	 * @param sc   scanner
-	 * 
+	 * @param  args                               array of arguments - keyword
+	 *                                            (encrypt/decrypt), path to source
+	 *                                            file, and path to destination file
+	 * @param  sc                                 scanner
 	 * @throws NullPointerException               if any argument is
 	 *                                            <code>null</code>
-	 * 
 	 * @throws IOException                        if arguments represent files that
 	 *                                            do not exist on disk, or it was
 	 *                                            not possible to read or write to
@@ -142,9 +141,9 @@ public class Crypto {
 	 * Helper method for communicating with the user through standard output and by
 	 * using provided scanner. Calculates SHA-256 file digest.
 	 * 
-	 * @param path path to file whose digest is to be calculated
-	 * @param sc   scanner
-	 * 
+	 * @param  path                     path to file whose digest is to be
+	 *                                  calculated
+	 * @param  sc                       scanner
 	 * @throws NullPointerException     if any argument is <code>null</code>
 	 * @throws IOException              if <code>path</code> does not exist, or it
 	 *                                  was not possible to read <code>path</code>
@@ -175,9 +174,10 @@ public class Crypto {
 	/**
 	 * Calculates the SHA-256 file digest.
 	 * 
-	 * @param file path to file whose digest is to be calculated
-	 * @return hex-encoding of the SHA-256 file digest, never <code>null</code>
-	 * 
+	 * @param  file                     path to file whose digest is to be
+	 *                                  calculated
+	 * @return                          hex-encoding of the SHA-256 file digest,
+	 *                                  never <code>null</code>
 	 * @throws NullPointerException     if <code>file</code> is <code>null</code>
 	 * @throws IOException              if <code>file</code> does not exist, or it
 	 *                                  was not possible to read <code>file</code>
@@ -207,13 +207,13 @@ public class Crypto {
 	 * Encrypts or decrypts file with path <code>source</code> by using symmetric
 	 * crypto-algorithm <code>AES</code> and 128-bit encryption key.
 	 * 
-	 * @param source      file to be encrypted/decrypted
-	 * @param destination where the result will be written
-	 * @param keyText     password for encryption/decryption
-	 * @param ivText      initialization vector
-	 * @param encrypt     <code>true</code> if file should be encrypted,
-	 *                    <code>false</code> if it should be decrypted
-	 * 
+	 * @param  source                             file to be encrypted/decrypted
+	 * @param  destination                        where the result will be written
+	 * @param  keyText                            password for encryption/decryption
+	 * @param  ivText                             initialization vector
+	 * @param  encrypt                            <code>true</code> if file should
+	 *                                            be encrypted, <code>false</code>
+	 *                                            if it should be decrypted
 	 * @throws NullPointerException               if any argument is
 	 *                                            <code>null</code>
 	 * @throws IllegalArgumentException           if number of characters in
