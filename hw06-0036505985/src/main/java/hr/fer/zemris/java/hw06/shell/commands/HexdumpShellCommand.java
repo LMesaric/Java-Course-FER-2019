@@ -70,51 +70,64 @@ public class HexdumpShellCommand implements ShellCommand {
 				Files.newInputStream(file))) {
 
 			byte[] bytesLine = new byte[BYTES_PER_LINE];
+			StringBuilder sbHex = new StringBuilder(BYTES_PER_LINE << 2); // x4
+			StringBuilder sbChar = new StringBuilder(BYTES_PER_LINE);
 			int lineIndex = 0;
 			String line;
 
-			while ((line = formatLine(is, lineIndex, bytesLine)) != null) {
+			while ((line = formatLine(is, lineIndex, bytesLine, sbHex, sbChar)) != null) {
 				env.writeln(line);
 				lineIndex += BYTES_PER_LINE;
 			}
 
 		} catch (IOException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			env.writeln("Exception occured while reading from file: "
+					+ e.getMessage());
 		}
 	}
 
 	/**
-	 * Reads and formats one line of data used for hex dumping.
+	 * Reads and formats one line of data used for hex dumping.<br>
+	 * Beware that <code>buffer</code>, <code>sbHex</code> and <code>sbChar</code>
+	 * will lose their previous content after calling this method.
 	 * 
 	 * @param  is          input stream from which data is read
 	 * @param  lineIndex   ordinal number of the first byte that will be formatted
 	 *                     in this line
 	 * @param  buffer      byte array of size {@link #BYTES_PER_LINE}
+	 * @param  sbHex       string builder, preferably of capacity
+	 *                     <code>4*BYTES_PER_LINE</code>
+	 * @param  sbChar      string builder, preferably of capacity
+	 *                     <code>BYTES_PER_LINE</code>
 	 * @return             formatted line; <code>null</code> if all data was read
 	 * @throws IOException if data cannot be read from <code>is</code> for any
 	 *                     reason
 	 */
-	private String formatLine(InputStream is, int lineIndex, byte[] buffer)
+	private String formatLine(InputStream is, int lineIndex,
+			byte[] buffer, StringBuilder sbHex, StringBuilder sbChar)
 			throws IOException {
-		// byte array is sent to this method so that one instance can be reused
+		// byte array and string builders are sent to this method so that one instance
+		// can be reused for many calls
+
 		int read = is.readNBytes(buffer, 0, buffer.length);
 		if (read <= 0) {
 			return null;
 		}
-		// string builders will never need to resize
-		final int max = BYTES_PER_LINE;	// cache for speed
-		StringBuilder sbHex = new StringBuilder(max << 2);	// x4
-		StringBuilder sbChar = new StringBuilder(max);
+		// clearing string builders takes minimal effort
+		sbHex.setLength(0);
+		sbChar.setLength(0);
 		sbHex.append(String.format("%08X:", lineIndex));
 
-		final int mid = max >> 1;
+		final int max = BYTES_PER_LINE;	// cache for speed
+		final int mid = max >> 1;		// divide by 2
 		for (int i = 0; i < max; i++) {
 			sbHex.append(i == mid ? '|' : ' ');
 			byte b = buffer[i];
 			boolean r = i >= read;
 			sbHex.append(r ? "  " : String.format("%02X", b));
 			sbChar.append(r ? ' ' : ((b < 32 || b >= 127) ? '.' : (char) b));
+			// value 127 is checked because it is mapped
+			// to a 'DEL' char that cannot be rendered
 		}
 		return sbHex.append(" | ").append(sbChar).toString();
 	}
