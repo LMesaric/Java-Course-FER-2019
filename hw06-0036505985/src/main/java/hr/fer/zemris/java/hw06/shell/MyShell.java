@@ -63,14 +63,14 @@ public class MyShell implements Environment {
 	private final SortedMap<String, ShellCommand> commands = new TreeMap<>();
 
 	/**
-	 * Default constructor.
+	 * Default constructor.<br>
+	 * It is caller's responsibility to close given scanner.
 	 * 
 	 * @param  sc                   scanner used to read user input
 	 * @throws NullPointerException if <code>sc</code> is <code>null</code>
 	 */
 	public MyShell(Scanner sc) {
-		ExceptionUtil.validateNotNull(sc, "sc");
-		this.scanner = sc;
+		this.scanner = ExceptionUtil.validateNotNull(sc, "sc");
 	}
 
 	/**

@@ -3,9 +3,9 @@ package hr.fer.zemris.java.hw06.shell.commands;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -67,10 +67,11 @@ public class CopyShellCommand implements ShellCommand {
 		if (!ArgumentChecker.validateIsFile(source, env)) {
 			return ShellStatus.CONTINUE;
 		}
+
 		// At this point, source exists and it is a file
 		try {
 			if (Files.isDirectory(dest)) {
-				dest = Paths.get(dest.toString(), source.getFileName().toString());
+				dest = dest.resolve(source.getFileName());
 				// It is possible that there exists a subdirectory
 				// with the same name as source
 				if (Files.isDirectory(dest)) {
@@ -78,17 +79,31 @@ public class CopyShellCommand implements ShellCommand {
 					env.writeln("Aborting execution.");
 					return ShellStatus.CONTINUE;
 				}
+			} else if (Files.notExists(dest.toAbsolutePath().normalize().getParent())) {
+				env.writeln("Destination is located in an unexisting directory.");
+				return ShellStatus.CONTINUE;
 			}
-			if (Files.isRegularFile(dest)) {
+
+			if (source.toAbsolutePath().normalize()
+					.equals(dest.toAbsolutePath().normalize())) {
+				// toAbsolutePath is needed because of some paths that contain '..'
+				env.writeln("Entered paths represent the same file.");
+				env.writeln("Aborting execution.");
+				return ShellStatus.CONTINUE;
+			} else if (Files.isRegularFile(dest)) {
 				env.writeln("Destination already exists: " + dest);
 				env.writeln("Are you sure you want to overwrite it? Yes/No");
 				if (!getConfirmationFromUser(env)) {
 					return ShellStatus.CONTINUE;
 				}
 			}
-			copyFile(env, source, dest);
-		} catch (SecurityException e) {
+			copyFile(source, dest);
+
+		} catch (SecurityException | AccessDeniedException e) {
 			env.writeln("Access denied: " + e.getMessage());
+		} catch (IOException e) {
+			env.writeln("Exception occured while reading or writing: "
+					+ e.getMessage());
 		}
 		return ShellStatus.CONTINUE;
 	}
@@ -96,20 +111,17 @@ public class CopyShellCommand implements ShellCommand {
 	/**
 	 * Copies <code>source</code> do <code>dest</code>, overwriting it if it exists.
 	 * 
-	 * @param  env               environment used for writing error messages
 	 * @param  source            file to copy
 	 * @param  dest              destination to which <code>source</code> is copied
+	 * @throws IOException       if file could not be copied
 	 * @throws SecurityException if access to file is denied
 	 */
-	private void copyFile(Environment env, Path source, Path dest) {
+	private void copyFile(Path source, Path dest) throws IOException {
 		try (BufferedInputStream bis = new BufferedInputStream(
-					Files.newInputStream(source));
+				Files.newInputStream(source));
 				BufferedOutputStream bos = new BufferedOutputStream(
 						Files.newOutputStream(dest))) {
 			bis.transferTo(bos);
-		} catch (IOException e) {
-			env.writeln("Exception occured while reading or writing: "
-					+ e.getMessage());
 		}
 	}
 

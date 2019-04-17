@@ -93,7 +93,19 @@ public class TreeShellCommand implements ShellCommand {
 
 		@Override
 		public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-			env.writeln(INDENTATION_PER_LEVEL.repeat(depth) + dir.getFileName());
+			String output;
+			if (depth == 0) {
+				Path fileName = dir.toAbsolutePath().normalize().getFileName();
+				if (fileName == null) {
+					// e.g. when dir was "C:/"
+					output = dir.toString();
+				} else {
+					output = fileName.toString();
+				}
+			} else {
+				output = INDENTATION_PER_LEVEL.repeat(depth) + dir.getFileName();
+			}
+			env.writeln(output);
 			depth++;
 			return FileVisitResult.CONTINUE;
 		}
