@@ -15,6 +15,6 @@ public interface IntegerStorageObserver {
 	 * @throws NullPointerException if <code>istorageChange</code> is
 	 *                              <code>null</code>
 	 */
-	public void valueChanged(IntegerStorageChange istorageChange);
+	void valueChanged(IntegerStorageChange istorageChange);
 
 }

@@ -14,6 +14,6 @@ public interface IntegerStorageObserver {
 	 * @param  istorage             observed object
 	 * @throws NullPointerException if <code>istorage</code> is <code>null</code>
 	 */
-	public void valueChanged(IntegerStorage istorage);
+	void valueChanged(IntegerStorage istorage);
 
 }
