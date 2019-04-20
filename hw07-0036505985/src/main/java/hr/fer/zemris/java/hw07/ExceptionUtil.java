@@ -10,8 +10,8 @@ import java.util.Objects;
 public final class ExceptionUtil {
 
 	/**
-	 * Checks that the specified object reference is not {@code null} and throws a
-	 * customised {@link NullPointerException} if it is.
+	 * Checks that the specified object reference is not <code>null</code> and
+	 * throws a customised {@link NullPointerException} if it is.
 	 *
 	 * @param  object               the object reference to check
 	 * @param  name                 name to use in exception message
