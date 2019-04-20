@@ -18,9 +18,9 @@ public class SquareValue implements IntegerStorageObserver {
 	 * @throws NullPointerException {@inheritDoc}
 	 */
 	@Override
-	public void valueChanged(IntegerStorage istorage) {
-		ExceptionUtil.validateNotNull(istorage, "istorage");
-		int newValue = istorage.getValue();
+	public void valueChanged(IntegerStorageChange istorageChange) {
+		ExceptionUtil.validateNotNull(istorageChange, "istorageChange");
+		int newValue = istorageChange.getNewValue();
 		int square = newValue * newValue;
 		System.out.format("Provided new value: %d, square is %d%n",
 				newValue, square);

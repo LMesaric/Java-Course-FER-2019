@@ -20,10 +20,10 @@ public class ChangeCounter implements IntegerStorageObserver {
 	 * Writes the number of times the stored value has been changed to the standard
 	 * output.
 	 * 
-	 * @param istorage observed object, ignored
+	 * @param istorageChange wrapper of observed object, ignored
 	 */
 	@Override
-	public void valueChanged(IntegerStorage istorage) {
+	public void valueChanged(IntegerStorageChange istorageChange) {
 		counter++;
 		System.out.println("Number of value changes since tracking: " + counter);
 	}

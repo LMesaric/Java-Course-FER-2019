@@ -41,15 +41,15 @@ public class DoubleValue implements IntegerStorageObserver {
 	 * @throws NullPointerException {@inheritDoc}
 	 */
 	@Override
-	public void valueChanged(IntegerStorage istorage) {
-		ExceptionUtil.validateNotNull(istorage, "istorage");
+	public void valueChanged(IntegerStorageChange istorageChange) {
+		ExceptionUtil.validateNotNull(istorageChange, "istorageChange");
 
-		int doubled = 2 * istorage.getValue();
+		int doubled = 2 * istorageChange.getNewValue();
 		System.out.println("Double value: " + doubled);
 
 		counter--;
 		if (counter <= 0) {
-			istorage.removeObserver(this);
+			istorageChange.getIstorage().removeObserver(this);
 		}
 	}
 

@@ -92,20 +92,23 @@ public class IntegerStorage {
 	 */
 	public void setValue(int value) {
 		if (this.value != value) {
+			int oldValue = this.value;
 			this.value = value;
-			notifyObservers();
+			notifyObservers(new IntegerStorageChange(this, oldValue));
 		}
 	}
 
 	/**
 	 * Notifies all currently registered observers about last change.
+	 * 
+	 * @param change reference to a wrapper of integer storage
 	 */
-	private void notifyObservers() {
+	private void notifyObservers(IntegerStorageChange change) {
 		if (observers == null) {
 			return;
 		}
 		for (IntegerStorageObserver observer : observers) {
-			observer.valueChanged(this);
+			observer.valueChanged(change);
 		}
 	}
 
