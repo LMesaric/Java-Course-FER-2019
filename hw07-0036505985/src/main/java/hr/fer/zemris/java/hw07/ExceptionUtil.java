@@ -1,4 +1,4 @@
-package hr.fer.zemris.java.hw06;
+package hr.fer.zemris.java.hw07;
 
 import java.util.Objects;
 
