@@ -1,5 +1,6 @@
 package hr.fer.zemris.java.custom.scripting.exec;
 
+import java.util.Objects;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.IntBinaryOperator;
 
@@ -240,6 +241,26 @@ public class ValueWrapper {
 	 */
 	private static boolean areBothIntegers(Object first, Object second) {
 		return (first instanceof Integer) && (second instanceof Integer);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(value);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof ValueWrapper)) {
+			return false;
+		}
+		ValueWrapper other = (ValueWrapper) obj;
+		return Objects.equals(value, other.value);
 	}
 
 }

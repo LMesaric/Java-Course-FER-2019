@@ -2,6 +2,7 @@ package hr.fer.zemris.java.hw07.demo2;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * Simulates a collection of consecutive prime numbers. Allows iteration through
@@ -104,6 +105,26 @@ public class PrimesCollection implements Iterable<Integer> {
 			return lastGeneratedPrime;
 		}
 
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(numberOfPrimes);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof PrimesCollection)) {
+			return false;
+		}
+		PrimesCollection other = (PrimesCollection) obj;
+		return numberOfPrimes == other.numberOfPrimes;
 	}
 
 }
