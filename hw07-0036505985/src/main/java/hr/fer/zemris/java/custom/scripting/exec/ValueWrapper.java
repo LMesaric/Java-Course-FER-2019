@@ -146,7 +146,7 @@ public class ValueWrapper {
 
 		Number n1 = prepareOneArgument(first);
 		Number n2 = prepareOneArgument(second);
-		if (areBothIntegers(n1, n2)) {
+		if ((n1 instanceof Integer) && (n2 instanceof Integer)) {
 			return intBinary.applyAsInt(n1.intValue(), n2.intValue());
 		} else {
 			return doubleBinary.applyAsDouble(n1.doubleValue(), n2.doubleValue());
@@ -228,19 +228,6 @@ public class ValueWrapper {
 				|| object instanceof Integer
 				|| object instanceof Double
 				|| object instanceof String;
-	}
-
-	/**
-	 * Checks if both arguments are instances of class <code>Integer</code>.
-	 * 
-	 * @param  first  first argument
-	 * @param  second second argument
-	 * @return        <code>true</code> if both <code>first</code> and
-	 *                <code>second</code> are instances of <code>Integer</code>,
-	 *                <code>false</code> otherwise
-	 */
-	private static boolean areBothIntegers(Object first, Object second) {
-		return (first instanceof Integer) && (second instanceof Integer);
 	}
 
 	@Override
