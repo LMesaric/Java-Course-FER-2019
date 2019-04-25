@@ -90,9 +90,10 @@ public class ValueWrapper {
 	/**
 	 * Divides stored value by <code>divValue</code>.
 	 * 
-	 * @param  divValue         value by which to divide the stored value
-	 * @throws RuntimeException if <code>value</code> or <code>divValue</code>
-	 *                          cannot be converted to any of the supported types
+	 * @param  divValue            value by which to divide the stored value
+	 * @throws ArithmeticException in case of integer division by <code>0</code>
+	 * @throws RuntimeException    if <code>value</code> or <code>divValue</code>
+	 *                             cannot be converted to any of the supported types
 	 */
 	public void divide(Object divValue) {
 		this.value = performOperation(
