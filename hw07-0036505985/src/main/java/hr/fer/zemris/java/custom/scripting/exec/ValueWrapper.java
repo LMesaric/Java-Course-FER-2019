@@ -69,8 +69,8 @@ public class ValueWrapper {
 	public void subtract(Object decValue) {
 		this.value = performOperation(
 				value, decValue,
-				(i1, i2) -> i1 + i2,
-				(d1, d2) -> d1 + d2);
+				(i1, i2) -> i1 - i2,
+				(d1, d2) -> d1 - d2);
 	}
 
 	/**
