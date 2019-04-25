@@ -1,7 +1,9 @@
 package hr.fer.zemris.java.hw06.shell.commands;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -101,7 +103,11 @@ public class CatShellCommand implements ShellCommand {
 	 * @param charset charset to use for reading
 	 */
 	private void writeToEnvironment(Environment env, Path path, Charset charset) {
-		try (BufferedReader br = Files.newBufferedReader(path, charset);
+
+		try (BufferedReader br = new BufferedReader(
+				new InputStreamReader(
+						new BufferedInputStream(Files.newInputStream(path)),
+						charset));
 				Stream<String> lines = br.lines()) {
 			lines.forEach(env::writeln);
 		} catch (IOException | UncheckedIOException | SecurityException e) {
