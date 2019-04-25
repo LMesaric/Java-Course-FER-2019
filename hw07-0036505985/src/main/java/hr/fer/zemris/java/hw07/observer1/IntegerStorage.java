@@ -104,6 +104,7 @@ public class IntegerStorage {
 		if (observers == null) {
 			return;
 		}
+		// it is crucial that an iterator is used!
 		for (IntegerStorageObserver observer : observers) {
 			observer.valueChanged(this);
 		}
