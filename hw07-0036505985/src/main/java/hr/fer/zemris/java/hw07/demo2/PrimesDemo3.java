@@ -1,7 +1,7 @@
 package hr.fer.zemris.java.hw07.demo2;
 
 /**
- * Second demo program for {@link PrimesCollection}.
+ * Third demo program for {@link PrimesCollection}.
  * 
  * @author Luka Mesaric
  */
