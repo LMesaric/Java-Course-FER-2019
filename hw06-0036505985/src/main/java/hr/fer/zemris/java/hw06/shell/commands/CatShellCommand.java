@@ -103,7 +103,6 @@ public class CatShellCommand implements ShellCommand {
 	 * @param charset charset to use for reading
 	 */
 	private void writeToEnvironment(Environment env, Path path, Charset charset) {
-
 		try (BufferedReader br = new BufferedReader(
 				new InputStreamReader(
 						new BufferedInputStream(Files.newInputStream(path)),
