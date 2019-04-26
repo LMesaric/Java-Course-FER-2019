@@ -1,6 +1,11 @@
 package hr.fer.zemris.java.hw06.shell;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.SortedMap;
@@ -8,13 +13,19 @@ import java.util.TreeMap;
 
 import hr.fer.zemris.java.hw06.ExceptionUtil;
 import hr.fer.zemris.java.hw06.shell.commands.CatShellCommand;
+import hr.fer.zemris.java.hw06.shell.commands.CdShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.CharsetsShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.CopyShellCommand;
+import hr.fer.zemris.java.hw06.shell.commands.DropdShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.ExitShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.HelpShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.HexdumpShellCommand;
+import hr.fer.zemris.java.hw06.shell.commands.ListdShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.LsShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.MkdirShellCommand;
+import hr.fer.zemris.java.hw06.shell.commands.PopdShellCommand;
+import hr.fer.zemris.java.hw06.shell.commands.PushdShellCommand;
+import hr.fer.zemris.java.hw06.shell.commands.PwdShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.SymbolShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.TreeShellCommand;
 
@@ -53,6 +64,13 @@ public class MyShell implements Environment {
 	private char morelinesSymbol = '\\';
 
 	/**
+	 * Shell's current directory. All relative paths are to be resolved against this
+	 * path. <br>
+	 * This path must be absolute and normalized.
+	 */
+	private Path currentDirectory;
+
+	/**
 	 * Scanner used to read user input.
 	 */
 	private final Scanner scanner;
@@ -61,6 +79,11 @@ public class MyShell implements Environment {
 	 * Map of all supported shell commands.
 	 */
 	private final SortedMap<String, ShellCommand> commands = new TreeMap<>();
+
+	/**
+	 * Map of data shared between commands. Keys must not be <code>null</code>.
+	 */
+	private final Map<String, Object> sharedData = new HashMap<>();
 
 	/**
 	 * Default constructor.<br>
@@ -80,15 +103,23 @@ public class MyShell implements Environment {
 
 		registerShellCommands(
 				new CatShellCommand(),
+				new CdShellCommand(),
 				new CharsetsShellCommand(),
 				new CopyShellCommand(),
+				new DropdShellCommand(),
 				new ExitShellCommand(),
 				new HelpShellCommand(),
 				new HexdumpShellCommand(),
+				new ListdShellCommand(),
 				new LsShellCommand(),
 				new MkdirShellCommand(),
+				new PopdShellCommand(),
+				new PushdShellCommand(),
+				new PwdShellCommand(),
 				new SymbolShellCommand(),
 				new TreeShellCommand());
+
+		setCurrentDirectory(Paths.get("."));
 
 		try {
 			writeln("Welcome to MyShell v 1.0");
@@ -231,6 +262,42 @@ public class MyShell implements Environment {
 	public void setMorelinesSymbol(Character symbol) {
 		ExceptionUtil.validateNotNull(symbol, "symbol");
 		this.morelinesSymbol = symbol;
+	}
+
+	@Override
+	public Path getCurrentDirectory() { return currentDirectory; }
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @throws NullPointerException     {@inheritDoc}
+	 * @throws IllegalArgumentException {@inheritDoc}
+	 */
+	@Override
+	public void setCurrentDirectory(Path path) {
+		ExceptionUtil.validateNotNull(path, "path");
+		Path normalized = path.toAbsolutePath().normalize();
+		if (!Files.isDirectory(normalized)) {
+			throw new IllegalArgumentException(
+					"Given path does not represent an existing directory.");
+		}
+		this.currentDirectory = normalized;
+	}
+
+	@Override
+	public Object getSharedData(String key) {
+		return sharedData.get(key);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @throws NullPointerException {@inheritDoc}
+	 */
+	@Override
+	public void setSharedData(String key, Object value) {
+		ExceptionUtil.validateNotNull(key, "key");
+		sharedData.put(key, value);
 	}
 
 }

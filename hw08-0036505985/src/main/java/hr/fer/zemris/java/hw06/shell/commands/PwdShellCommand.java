@@ -1,8 +1,5 @@
 package hr.fer.zemris.java.hw06.shell.commands;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -11,24 +8,22 @@ import hr.fer.zemris.java.hw06.ExceptionUtil;
 import hr.fer.zemris.java.hw06.shell.Environment;
 import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.ShellStatus;
-import hr.fer.zemris.java.hw06.shell.util.ArgumentChecker;
 
 /**
- * Creates new directories. All parent directories are created as well.<br>
- * Expects a single argument: directory name.
+ * Writes current working directory as an absolute path.<br>
+ * Command takes no arguments.
  * 
  * @author Luka Mesaric
  */
-public class MkdirShellCommand implements ShellCommand {
+public class PwdShellCommand implements ShellCommand {
 
 	/** Name of this command. */
-	private static final String COMMAND_NAME = "mkdir";
+	private static final String COMMAND_NAME = "pwd";
 
 	/** Description of this command. */
 	private static final List<String> COMMAND_DESCRIPTION = Arrays.asList(
-			"Creates new directories.",
-			"All parent directories are created as well.",
-			"Expects a single argument: directory name.");
+			"Writes current working directory as an absolute path.",
+			"Command takes no arguments.");
 
 	/**
 	 * {@inheritDoc}
@@ -40,19 +35,12 @@ public class MkdirShellCommand implements ShellCommand {
 		ExceptionUtil.validateNotNull(env, "env");
 		ExceptionUtil.validateNotNull(arguments, "arguments");
 
-		Path dir = ArgumentChecker.expectExactlyOnePath(arguments, env, (p, e) -> true);
-		if (dir == null) {
+		if (!arguments.isBlank()) {
+			env.writeln(getCommandName() + " command cannot have any arguments.");
 			return ShellStatus.CONTINUE;
 		}
 
-		try {
-			Files.createDirectories(dir);
-		} catch (IOException | SecurityException e) {
-			env.writeln("Exception occured while creating directories: "
-					+ e.getMessage());
-			env.writeln("Please note that some of the parent directories "
-					+ "may have been created.");
-		}
+		env.writeln(env.getCurrentDirectory().toString());
 		return ShellStatus.CONTINUE;
 	}
 

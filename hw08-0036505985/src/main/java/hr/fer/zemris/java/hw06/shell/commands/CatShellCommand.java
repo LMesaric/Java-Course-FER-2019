@@ -73,6 +73,7 @@ public class CatShellCommand implements ShellCommand {
 			env.writeln("Invalid path: " + e.getMessage());
 			return ShellStatus.CONTINUE;
 		}
+		path = ArgumentChecker.resolveAgainstCurrentDir(path, env);
 		if (!ArgumentChecker.validateIsFile(path, env)) {
 			return ShellStatus.CONTINUE;
 		}

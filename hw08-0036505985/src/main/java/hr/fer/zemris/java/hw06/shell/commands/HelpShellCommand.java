@@ -59,9 +59,7 @@ public class HelpShellCommand implements ShellCommand {
 	 */
 	private void printSupportedCommands(Environment env) {
 		env.writeln("Supported commands are: ");
-		for (String commandName : env.commands().keySet()) {
-			env.writeln(commandName);
-		}
+		env.commands().keySet().forEach(env::writeln);
 	}
 
 	/**
@@ -78,9 +76,7 @@ public class HelpShellCommand implements ShellCommand {
 		} else {
 			env.writeln(String.format(
 					"Description of command '%s':", command.getCommandName()));
-			for (String line : command.getCommandDescription()) {
-				env.writeln(line);
-			}
+			command.getCommandDescription().forEach(env::writeln);
 		}
 	}
 

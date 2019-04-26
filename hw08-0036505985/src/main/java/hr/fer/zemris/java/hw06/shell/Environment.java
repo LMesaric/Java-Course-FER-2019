@@ -1,5 +1,6 @@
 package hr.fer.zemris.java.hw06.shell;
 
+import java.nio.file.Path;
 import java.util.SortedMap;
 
 /**
@@ -95,5 +96,40 @@ public interface Environment {
 	 * @throws NullPointerException if <code>symbol</code> is <code>null</code>
 	 */
 	void setMorelinesSymbol(Character symbol);
+
+	/**
+	 * Getter for <code>currentDirectory</code>. Returned path is absolute.
+	 *
+	 * @return <code>currentDirectory</code>, never <code>null</code>
+	 */
+	Path getCurrentDirectory();
+
+	/**
+	 * Setter for <code>currentDirectory</code>.
+	 *
+	 * @param  path                     the <code>currentDirectory</code> to set
+	 * @throws NullPointerException     if <code>path</code> is <code>null</code>
+	 * @throws IllegalArgumentException if <code>path</code> does not represent an
+	 *                                  existing directory
+	 */
+	void setCurrentDirectory(Path path);
+
+	/**
+	 * Returns shared data stored under the given <code>key</code>.
+	 * 
+	 * @param  key name of stored data
+	 * @return     shared data stored under the given <code>key</code>, or
+	 *             <code>null</code> if such data does not exist
+	 */
+	Object getSharedData(String key);
+
+	/**
+	 * Setter for shared data for given <code>key</code>.
+	 * 
+	 * @param  key                  name of stored data
+	 * @param  value                the <code>value</code> to set
+	 * @throws NullPointerException if <code>key</code> is <code>null</code>
+	 */
+	void setSharedData(String key, Object value);
 
 }

@@ -1,7 +1,5 @@
 package hr.fer.zemris.java.hw06.shell.commands;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,21 +12,25 @@ import hr.fer.zemris.java.hw06.shell.ShellStatus;
 import hr.fer.zemris.java.hw06.shell.util.ArgumentChecker;
 
 /**
- * Creates new directories. All parent directories are created as well.<br>
- * Expects a single argument: directory name.
+ * Changes shell's current directory.<br>
+ * Expects a single argument: directory name. That name can be either a relative
+ * or absolute path. In case of a relative path, it will be resolved against the
+ * previous current directory.
  * 
  * @author Luka Mesaric
  */
-public class MkdirShellCommand implements ShellCommand {
+public class CdShellCommand implements ShellCommand {
 
 	/** Name of this command. */
-	private static final String COMMAND_NAME = "mkdir";
+	private static final String COMMAND_NAME = "cd";
 
 	/** Description of this command. */
 	private static final List<String> COMMAND_DESCRIPTION = Arrays.asList(
-			"Creates new directories.",
-			"All parent directories are created as well.",
-			"Expects a single argument: directory name.");
+			"Changes shell's current directory.",
+			"Expects a single argument: directory name.",
+			"That name can be either a relative or absolute path.",
+			"In case of a relative path, it will be resolved against "
+					+ "the previous current directory.");
 
 	/**
 	 * {@inheritDoc}
@@ -40,19 +42,12 @@ public class MkdirShellCommand implements ShellCommand {
 		ExceptionUtil.validateNotNull(env, "env");
 		ExceptionUtil.validateNotNull(arguments, "arguments");
 
-		Path dir = ArgumentChecker.expectExactlyOnePath(arguments, env, (p, e) -> true);
+		Path dir = ArgumentChecker.expectExactlyOneExistingDirectory(arguments, env);
 		if (dir == null) {
 			return ShellStatus.CONTINUE;
 		}
 
-		try {
-			Files.createDirectories(dir);
-		} catch (IOException | SecurityException e) {
-			env.writeln("Exception occured while creating directories: "
-					+ e.getMessage());
-			env.writeln("Please note that some of the parent directories "
-					+ "may have been created.");
-		}
+		env.setCurrentDirectory(dir);
 		return ShellStatus.CONTINUE;
 	}
 

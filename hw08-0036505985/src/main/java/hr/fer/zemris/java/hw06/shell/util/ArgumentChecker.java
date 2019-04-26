@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import hr.fer.zemris.java.hw06.ExceptionUtil;
 import hr.fer.zemris.java.hw06.shell.Environment;
@@ -22,6 +23,9 @@ public final class ArgumentChecker {
 	/**
 	 * Parses given argument into a list of <code>Paths</code>. Escaping quotation
 	 * marks and backslashes inside strings is allowed.<br>
+	 * Automatically resolves the parsed <code>paths</code> against the current
+	 * directory from <code>env</code>.
+	 * <p>
 	 * After the ending quotation mark, either no more characters must be present or
 	 * at least one space character must be present.<br>
 	 * If <code>paths</code> cannot be parsed for any reason (e.g. string is never
@@ -41,7 +45,10 @@ public final class ArgumentChecker {
 		ExceptionUtil.validateNotNull(env, "env");
 
 		try {
-			return ArgumentParser.parseToPaths(paths);
+			return ArgumentParser.parseToPaths(paths)
+					.stream()
+					.map(path -> resolveAgainstCurrentDir(path, env))
+					.collect(Collectors.toList());
 		} catch (IllegalArgumentException e) {
 			env.writeln("Invalid path: " + e.getMessage());
 			return null;
@@ -50,7 +57,8 @@ public final class ArgumentChecker {
 
 	/**
 	 * Parses given argument into a list of <code>Strings</code>. Escaping quotation
-	 * marks and backslashes inside strings is allowed.<br>
+	 * marks and backslashes inside strings is allowed.
+	 * <p>
 	 * After the ending quotation mark, either no more characters must be present or
 	 * at least one space character must be present.<br>
 	 * If <code>paths</code> cannot be parsed for any reason (e.g. string is never
@@ -77,9 +85,30 @@ public final class ArgumentChecker {
 	}
 
 	/**
+	 * Resolves the given <code>path</code> against the current directory from
+	 * <code>env</code>. Given <code>path</code> can be either relative or absolute.
+	 * 
+	 * @param  path                 path to resolve
+	 * @param  env                  environment whose current directory is used for
+	 *                              resolving paths
+	 * @return                      resolved absolute path, never <code>null</code>
+	 * @throws NullPointerException if any argument is <code>null</code>
+	 */
+	public static Path resolveAgainstCurrentDir(Path path, Environment env) {
+		ExceptionUtil.validateNotNull(path, "path");
+		ExceptionUtil.validateNotNull(env, "env");
+
+		Path currDir = env.getCurrentDirectory();
+		return currDir.resolve(path);
+	}
+
+	/**
 	 * Parses given argument into a single <code>Path</code> that represents an
 	 * existing directory. Escaping quotation marks and backslashes inside strings
 	 * is allowed.<br>
+	 * Automatically resolves the parsed <code>paths</code> against the current
+	 * directory from <code>env</code>.
+	 * <p>
 	 * After the ending quotation mark, either no more characters must be present or
 	 * at least one space character must be present.<br>
 	 * If <code>paths</code> cannot be parsed for any reason (e.g. string is never
@@ -90,7 +119,8 @@ public final class ArgumentChecker {
 	 * @param  paths                path to directory to be parsed
 	 * @param  env                  environment used to write messages
 	 * @return                      parsed <code>Path</code> representing an
-	 *                              existing directory; <code>null</code> if
+	 *                              existing directory, resolved against the current
+	 *                              directory; <code>null</code> if
 	 *                              <code>paths</code> could not be parsed, or
 	 *                              parsed path does not represent an existing
 	 *                              directory
@@ -109,6 +139,9 @@ public final class ArgumentChecker {
 	 * Parses given argument into a single <code>Path</code> that represents an
 	 * existing regular file. Escaping quotation marks and backslashes inside
 	 * strings is allowed.<br>
+	 * Automatically resolves the parsed <code>paths</code> against the current
+	 * directory from <code>env</code>.
+	 * <p>
 	 * After the ending quotation mark, either no more characters must be present or
 	 * at least one space character must be present.<br>
 	 * If <code>paths</code> cannot be parsed for any reason (e.g. string is never
@@ -119,7 +152,8 @@ public final class ArgumentChecker {
 	 * @param  paths                path to regular file to be parsed
 	 * @param  env                  environment used to write messages
 	 * @return                      parsed <code>Path</code> representing an
-	 *                              existing regular file; <code>null</code> if
+	 *                              existing regular file, resolved against the
+	 *                              current directory; <code>null</code> if
 	 *                              <code>paths</code> could not be parsed, or
 	 *                              parsed path does not represent an existing
 	 *                              regular file
@@ -138,6 +172,9 @@ public final class ArgumentChecker {
 	 * Parses given argument into a single <code>Path</code> and tests if it
 	 * satisfies the given predicate. Escaping quotation marks and backslashes
 	 * inside strings is allowed.<br>
+	 * Automatically resolves the parsed <code>paths</code> against the current
+	 * directory from <code>env</code>.
+	 * <p>
 	 * After the ending quotation mark, either no more characters must be present or
 	 * at least one space character must be present.<br>
 	 * If <code>paths</code> cannot be parsed for any reason (e.g. string is never
@@ -149,7 +186,8 @@ public final class ArgumentChecker {
 	 * @param  env                  environment used to write messages
 	 * @param  predicate            predicate that needs to be satisfied
 	 * @return                      parsed <code>Path</code> that satisfies the
-	 *                              given predicate; <code>null</code> if
+	 *                              given predicate, resolved against the current
+	 *                              directory; <code>null</code> if
 	 *                              <code>paths</code> could not be parsed, or
 	 *                              parsed path does not satisfy the given
 	 *                              predicate, or does not exist
@@ -208,7 +246,9 @@ public final class ArgumentChecker {
 	/**
 	 * Tests whether given path represents a real directory. Writes a message to the
 	 * environment if it does not exist or does not represent a directory, or it
-	 * could not be accessed due to a <code>SecurityException</code>.
+	 * could not be accessed due to a <code>SecurityException</code>.<br>
+	 * Automatically resolves the given <code>path</code> against the current
+	 * directory from <code>env</code>.
 	 * 
 	 * @param  path                 path to the file to test
 	 * @param  env                  environment used to write a message
@@ -221,9 +261,10 @@ public final class ArgumentChecker {
 	 * @see                         Files#isDirectory(Path, LinkOption...)
 	 */
 	public static boolean validateIsDirectory(Path path, Environment env) {
-		return validateExists(path, env)
+		Path pathResolved = resolveAgainstCurrentDir(path, env);
+		return validateExists(pathResolved, env)
 				&& evaluatePredicate(
-						path,
+						pathResolved,
 						env,
 						"Specified argument is not a directory.",
 						Files::isDirectory);
@@ -232,7 +273,9 @@ public final class ArgumentChecker {
 	/**
 	 * Tests whether given path represents a regular file. Writes a message to the
 	 * environment if it does not exist or does not represent a regular file, or it
-	 * could not be read due to a <code>SecurityException</code>.
+	 * could not be read due to a <code>SecurityException</code>.<br>
+	 * Automatically resolves the given <code>path</code> against the current
+	 * directory from <code>env</code>.
 	 * 
 	 * @param  path                 path to the file to test
 	 * @param  env                  environment used to write a message
@@ -245,9 +288,10 @@ public final class ArgumentChecker {
 	 * @see                         Files#isRegularFile(Path, LinkOption...)
 	 */
 	public static boolean validateIsFile(Path path, Environment env) {
-		return validateExists(path, env)
+		Path pathResolved = resolveAgainstCurrentDir(path, env);
+		return validateExists(pathResolved, env)
 				&& evaluatePredicate(
-						path,
+						pathResolved,
 						env,
 						"Specified argument is not a regular file.",
 						Files::isRegularFile);
