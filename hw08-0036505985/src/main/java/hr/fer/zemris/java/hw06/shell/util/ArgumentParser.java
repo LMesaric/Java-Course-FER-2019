@@ -1,6 +1,5 @@
 package hr.fer.zemris.java.hw06.shell.util;
 
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -43,13 +42,9 @@ public final class ArgumentParser {
 	 */
 	public static List<Path> parseToPaths(String paths) {
 		ExceptionUtil.validateNotNull(paths, "argument");
-		try {
-			return parseToStrings(paths).stream()
-					.map(Paths::get)
-					.collect(Collectors.toList());
-		} catch (InvalidPathException e) {
-			throw new IllegalArgumentException(e.getMessage(), e);
-		}
+		return parseToStrings(paths).stream()
+				.map(Paths::get)
+				.collect(Collectors.toList());
 	}
 
 	/**
