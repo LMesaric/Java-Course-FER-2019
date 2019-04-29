@@ -22,6 +22,7 @@ import hr.fer.zemris.java.hw06.shell.commands.HelpShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.HexdumpShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.ListdShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.LsShellCommand;
+import hr.fer.zemris.java.hw06.shell.commands.MassrenameShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.MkdirShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.PopdShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.PushdShellCommand;
@@ -112,6 +113,7 @@ public class MyShell implements Environment {
 				new HexdumpShellCommand(),
 				new ListdShellCommand(),
 				new LsShellCommand(),
+				new MassrenameShellCommand(),
 				new MkdirShellCommand(),
 				new PopdShellCommand(),
 				new PushdShellCommand(),
