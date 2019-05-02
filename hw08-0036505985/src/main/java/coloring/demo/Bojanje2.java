@@ -14,7 +14,7 @@ import marcupic.opjj.statespace.coloring.Picture;
  * 
  * @author Luka Mesaric
  */
-class Bojanje2 {
+public class Bojanje2 {
 
 	/**
 	 * Program entry point.
