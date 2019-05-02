@@ -86,7 +86,7 @@ public class NameBuilderParser {
 			index++;
 		}
 		String extracted = new String(data, startIndex, index - startIndex);
-		appendBuiler(NameBuilder.text(extracted));
+		appendBuiler(DefaultNameBuilders.text(extracted));
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class NameBuilderParser {
 		int groupNumber = parseNonNegativeInteger(parts[0].strip());
 
 		if (parts.length == 1) {
-			appendBuiler(NameBuilder.group(groupNumber));
+			appendBuiler(DefaultNameBuilders.group(groupNumber));
 			return;
 		}
 
@@ -144,7 +144,7 @@ public class NameBuilderParser {
 		}
 
 		int minWidth = parseNonNegativeInteger(widthModifier);
-		appendBuiler(NameBuilder.group(groupNumber, padding, minWidth));
+		appendBuiler(DefaultNameBuilders.group(groupNumber, padding, minWidth));
 	}
 
 	/**
