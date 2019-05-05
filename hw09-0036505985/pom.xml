@@ -41,6 +41,11 @@
 		<!-- JARs from 'lib' directory must be manually added to your local Maven repository. 
 			See: https://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html -->
 		<dependency>
+			<groupId>hr.fer.zemris.java.fractals</groupId>
+			<artifactId>fractal-viewer</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>hr.fer.zemris.java.raytracer</groupId>
 			<artifactId>raytracer</artifactId>
 			<version>1.0</version>
