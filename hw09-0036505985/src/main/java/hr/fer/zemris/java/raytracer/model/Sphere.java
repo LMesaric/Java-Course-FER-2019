@@ -17,17 +17,17 @@ public class Sphere extends GraphicalObject {
 	private final double radius;
 	/** Radius of sphere, squared. */
 	private final double radiusSquared;
-	/** Coeficient of diffusion for red light. */
+	/** Coefficient of diffusion for red light. */
 	private final double kdr;
-	/** Coeficient of diffusion for green light. */
+	/** Coefficient of diffusion for green light. */
 	private final double kdg;
-	/** Coeficient of diffusion for blue light. */
+	/** Coefficient of diffusion for blue light. */
 	private final double kdb;
-	/** Coeficient of reflection for red light. */
+	/** Coefficient of reflection for red light. */
 	private final double krr;
-	/** Coeficient of reflection for green light. */
+	/** Coefficient of reflection for green light. */
 	private final double krg;
-	/** Coeficient of reflection for blue light. */
+	/** Coefficient of reflection for blue light. */
 	private final double krb;
 	/** Coefficient of specular reflectivity (shininess factor). */
 	private final double krn;
@@ -37,12 +37,12 @@ public class Sphere extends GraphicalObject {
 	 * 
 	 * @param  center               center of sphere
 	 * @param  radius               radius of sphere
-	 * @param  kdr                  coeficient of diffusion for red light
-	 * @param  kdg                  coeficient of diffusion for green light
-	 * @param  kdb                  coeficient of diffusion for blue light
-	 * @param  krr                  coeficient of reflection for red light
-	 * @param  krg                  coeficient of reflection for green light
-	 * @param  krb                  coeficient of reflection for blue light
+	 * @param  kdr                  coefficient of diffusion for red light
+	 * @param  kdg                  coefficient of diffusion for green light
+	 * @param  kdb                  coefficient of diffusion for blue light
+	 * @param  krr                  coefficient of reflection for red light
+	 * @param  krg                  coefficient of reflection for green light
+	 * @param  krb                  coefficient of reflection for blue light
 	 * @param  krn                  coefficient of specular reflectivity (shininess
 	 *                              factor)
 	 * @throws NullPointerException if <code>center</code> is <code>null</code>
