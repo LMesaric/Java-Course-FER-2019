@@ -65,7 +65,7 @@ public class Sphere extends GraphicalObject {
 
 	@Override
 	public RayIntersection findClosestRayIntersection(Ray ray) {
-		// Due to some perfomance issues because of too many objects being allocated,
+		// Due to some performance issues because of too many objects being allocated,
 		// some parts of code were slightly complicated to reduce the number of objects.
 
 		final Point3D startToCenter = center.sub(ray.start);
