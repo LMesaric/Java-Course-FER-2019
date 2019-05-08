@@ -73,14 +73,14 @@ public class ComplexRootedPolynomial {
 
 	/**
 	 * Finds the index of the closest root for given complex number <code>z</code>
-	 * that is within <code>treshold</code>. If there is no such root,
+	 * that is within <code>threshold</code>. If there is no such root,
 	 * <code>-1</code> is returned.<br>
 	 * First root has index <code>0</code>, second has index <code>1</code>, etc.
 	 * 
 	 * @param  z                    complex number around which to search for roots
 	 * @param  treshold             maximum distance from <code>z</code> to a root
 	 * @return                      index of closest root within
-	 *                              <code>treshold</code>, <code>-1</code> if such
+	 *                              <code>threshold</code>, <code>-1</code> if such
 	 *                              root does not exist
 	 * @throws NullPointerException if <code>z</code> is <code>null</code>
 	 */
