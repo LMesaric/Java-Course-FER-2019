@@ -75,9 +75,7 @@ public class ComplexPolynomial {
 		final int lenP = p.factors.length;
 
 		final Complex[] newFactors = new Complex[lenThis + lenP - 1];
-		for (int i = 0, lenNew = newFactors.length; i < lenNew; i++) {
-			newFactors[i] = Complex.ZERO;
-		}
+		Arrays.fill(newFactors, Complex.ZERO);
 
 		for (int i = 0; i < lenThis; i++) {
 			for (int j = 0; j < lenP; j++) {
