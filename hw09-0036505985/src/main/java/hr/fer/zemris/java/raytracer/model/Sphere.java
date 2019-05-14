@@ -240,7 +240,5 @@ public class Sphere extends GraphicalObject {
 			return String.format("SphereIntersection @[%f,%f,%f] distance: %f, outer: %b",
 					intersect.x, intersect.y, intersect.z, getDistance(), isOuter());
 		}
-
 	}
-
 }
