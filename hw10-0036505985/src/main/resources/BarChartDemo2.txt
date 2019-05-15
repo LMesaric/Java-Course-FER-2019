@@ -1,0 +1,7 @@
+Number of people in the car
+Frequency
+5,4  1,8 	3,27   4,10  2,20  
+  3 
+  29  
+ 4 
+Unread data.
