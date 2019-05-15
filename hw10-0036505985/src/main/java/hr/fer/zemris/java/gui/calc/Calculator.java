@@ -26,7 +26,8 @@ import hr.fer.zemris.java.gui.layouts.CalcLayout;
 import hr.fer.zemris.java.gui.layouts.RCPosition;
 
 /**
- * TODO Simple calculator - JAVADOC NA SVEMU!!! RECENZIJEEEEEE
+ * GUI for a simple calculator based on {@link CalcModel} and
+ * {@link CalcLayout}.
  * 
  * @author Luka Mesaric
  */
@@ -122,8 +123,9 @@ public class Calculator extends JFrame {
 	}
 
 	/**
-	 * Performs pending binary operation, if such exists. Sets active operand to
-	 * calculated value, or to current value if operation was not present.
+	 * Performs pending binary operation, if such exists, and clears it. Sets active
+	 * operand to calculated value, or to current value if operation was not
+	 * present.
 	 */
 	private void performCalculation() {
 		double value = model.getValue();
@@ -133,6 +135,7 @@ public class Calculator extends JFrame {
 			newValue = pending.applyAsDouble(model.getActiveOperand(), value);
 		}
 		model.setActiveOperand(newValue);
+		model.setPendingBinaryOperation(null);
 	}
 
 	/**
