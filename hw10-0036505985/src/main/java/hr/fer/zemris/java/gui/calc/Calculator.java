@@ -95,8 +95,7 @@ public class Calculator extends JFrame {
 			stack.clear();
 		});
 		setUpSimpleButton("1/x", "2,1", e -> {
-			performCalculation();
-			model.setValue(1.0 / model.getActiveOperand());
+			model.setValue(1.0 / model.getValue());
 		});
 		setUpSimpleButton("=", "1,6", e -> {
 			performCalculation();
@@ -214,10 +213,9 @@ public class Calculator extends JFrame {
 	 */
 	private ActionListener constructUnaryOpsListener() {
 		return e -> {
-			performCalculation();
 			@SuppressWarnings("unchecked")
 			var source = (Supplier<DoubleUnaryOperator>) e.getSource();
-			model.setValue(source.get().applyAsDouble(model.getActiveOperand()));
+			model.setValue(source.get().applyAsDouble(model.getValue()));
 		};
 	}
 
